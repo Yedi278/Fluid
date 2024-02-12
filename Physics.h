@@ -19,4 +19,5 @@ public:
     void boundariesCollisions(List* head);
     void resolveCollisions(List* head);
     void gravity(List* head,double t);
+    float SmoothingKernel(float radius, float dist);
 };

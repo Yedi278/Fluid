@@ -1,11 +1,13 @@
+#include <iostream>
+#include <algorithm>
+
 #include "Physics.h"
 #include "math.h"
-// #include "Vector2.h"
-#include <iostream>
+
 #define GRAVITY 0.0002
 #define dampening 0.2
 #define dampening2 0.3
-// #define M_PI 3.14159265358979323846
+
 
 Physics::Physics(List* head)
 {
@@ -30,7 +32,10 @@ Physics::Physics(int x_top, int x_down, int y_top, int y_down)
 
 Physics::~Physics()
 {
-    delete this;
+    if(this != nullptr){
+        // std::cout << this;
+        delete this;
+    }
 }
 
 void Physics::boundariesCollisions(List* head){
@@ -140,5 +145,11 @@ void Physics::gravity(List* head,double t){
 		head = head->prev;
 	}
 	head = tmp;
+
+}
+
+float Physics::SmoothingKernel(float radius, float dist){
+    // float val = (0, radius-dist);
+    std::cout << std::max(0,10) << std::endl;
 
 }

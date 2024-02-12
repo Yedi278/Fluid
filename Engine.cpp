@@ -31,13 +31,8 @@ void Engine::init(bool fullscreen) {
 		objList = new ObjectList();
 		this->phy = new Physics(this->objList->head);
 
-
-		// Vector2* vect = new Vector2(100,000);
-		// addObj(vect);
-		// Vector2* vect2 = new Vector2(100, 200);
-		// addObj(vect2);
-		// Vector2* vect3 = new Vector2(400, 200);
-		// addObj(vect3);
+		// Physics(nullptr).SmoothingKernel(1,0);
+		
 		
 		running = true;
 	}

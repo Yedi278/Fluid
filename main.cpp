@@ -6,7 +6,7 @@
 Engine* eng = nullptr;
 
 int main() {
-
+	
 	eng = new Engine("Fluid Simulation", 600,600);
 	eng->init(false);
 
