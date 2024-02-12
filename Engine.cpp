@@ -16,13 +16,12 @@ void Engine::init(bool fullscreen) {
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 
-		std::cout << "Error Initialising SDL \n";
-		std::cout << SDL_GetError() << std::endl;
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR,"Error Initialising SDL \n%s",SDL_GetError());
+		// std::cout << SDL_GetError() << std::endl;
 	}
 	else {
 
-		std::cout << "SDL Initialised \n";
-
+		SDL_Log("SDL Initialised Successfully\n");
 		bool flags = false;
 		if (fullscreen) { flags = true; }
 

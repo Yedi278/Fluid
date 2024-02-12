@@ -22,8 +22,7 @@ int main() {
 		eng->handleEvents();
 		if (delta > 1000 / FPS_LIMIT)
 		{
-			std::cout << "fps: " << 1000/delta << std::endl;
-
+			// SDL_Log("FPS: %f",1000/delta);
 			eng->update(delta);
 			
 			b = a;
