@@ -10,6 +10,15 @@ GameObject::GameObject(SDL_Renderer* prtRndr, Vector2* vect, int id) {
 
 }
 
+GameObject::GameObject(SDL_Renderer* prtRndr, Vector2* vect, int id, float radius) {
+
+	this->x = vect->xf;
+	this->y = vect->yf;
+	this->id = id;
+	this->radius = radius;
+
+}
+
 GameObject::~GameObject() {
 	delete this;
 }
@@ -18,10 +27,11 @@ void GameObject::update(Uint32 t) {
 
 	vy +=  gravity*t;
 	this->y += vy * t;
-	resolveCollisions();
+	// collider();
+
 }
 
-void GameObject::resolveCollisions() {
+void GameObject::collider() {
 
 	if (this->y > 580) {
 		this->y = 580;

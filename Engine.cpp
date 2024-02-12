@@ -1,13 +1,11 @@
 #include "Engine.h"
 #include <iostream>
 
-
 Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 
 	this->title = title;
 	this->width = width;
 	this->height = height;
-
 }
 
 Engine::~Engine() {
@@ -31,7 +29,8 @@ void Engine::init(bool fullscreen) {
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width, height, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		objList = new ObjectList();
-		//objList->init();
+		this->phy = new Physics(this->objList->head);
+
 
 		Vector2* vect = new Vector2(200,200);
 		addObj(vect);
@@ -69,14 +68,15 @@ void Engine::handleEvents() {
 	}
 }
 
-void Engine::update(Uint32 time) {
+void Engine::update(double time) {
 
-	// Vector2* vect3 = new Vector2(400, 200);
-	// addObj(vect3); 
-	
+	// phy->gravity(time);
 	objList->update_all(time);
+	// std::cout << objList->head->object->y << std::endl;
+	phy->resolveCollisions();
+	
+	// std::cout << counter << std::endl;
 	counter++;
-	std::cout << counter << std::endl;
 }
 
 void Engine::render() {

@@ -30,19 +30,12 @@ void ObjectList::update_all(Uint32 time) {
 		if (head->object != nullptr) {
 
 			head->object->update(time);
+			// physics(object list);
 		}
 		head = head->prev;
 	}
 	head = tmp;
 
-}
-
-void ObjectList::printList() {
-	List* tmp = head;
-	while (head != NULL) {
-		head = head->prev;
-	}
-	head = tmp;
 }
 
 void ObjectList::render_all(SDL_Renderer* parent_renderer) {
@@ -52,6 +45,14 @@ void ObjectList::render_all(SDL_Renderer* parent_renderer) {
 			
 			head->object->render(parent_renderer);
 		}
+		head = head->prev;
+	}
+	head = tmp;
+}
+
+void ObjectList::printList() {
+	List* tmp = head;
+	while (head != NULL) {
 		head = head->prev;
 	}
 	head = tmp;

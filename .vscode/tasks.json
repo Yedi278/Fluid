@@ -14,8 +14,9 @@
                 "ObjectList.cpp",
                 "GameObject.cpp",
                 "Vector2.cpp",
+                "Physics.cpp",
                 "-lSDL2main",
-                "-lSDL2",
+                "-lSDL2"
             ],
             "options": {
                 "cwd": "${fileDirname}"

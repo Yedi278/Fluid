@@ -22,7 +22,6 @@ int main() {
 		{
 			std::cout << "fps: " << 1000/delta << std::endl;
 
-
 			eng->handleEvents();
 			eng->update(delta);
 			eng->render();
