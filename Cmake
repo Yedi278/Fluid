@@ -1,0 +1,6 @@
+#!/bin/bash
+
+g++ -o Fluids main.cpp Engine.cpp ObjectList.cpp GameObject.cpp Vector2.cpp -lSDL2main -lSDL2
+
+./Fluids
+cls
