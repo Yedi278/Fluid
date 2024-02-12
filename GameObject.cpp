@@ -41,8 +41,8 @@ void GameObject::update(Uint32 t) {
 void GameObject::render(SDL_Renderer* parent_renderer) {
 
 	SDL_Rect* rect = new SDL_Rect();
-	rect->x = this->x + this->radius;
-	rect->y = this->y + this->radius;
+	rect->x = this->x - this->radius;
+	rect->y = this->y - this->radius;
 	rect->w = radius*2;
 	rect->h = radius*2;
 	SDL_SetRenderDrawColor(parent_renderer, 255, 0, 0, 255);

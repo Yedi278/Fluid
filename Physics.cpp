@@ -7,6 +7,7 @@
 Physics::Physics(List* head)
 {
     this->head = head;
+
     this->x_bound_top = 0;
     this->x_bound_down = 600;
 
@@ -26,24 +27,10 @@ Physics::Physics(int x_top, int x_down, int y_top, int y_down)
 
 Physics::~Physics()
 {
+    delete this;
 }
 
-void Physics::boundariesCollisions(){
-
-    // List* tmp = head;
-	// while (head != NULL) {
-	// 	if (head->object != nullptr) {
-
-            
-
-	// 	}
-	// 	head = head->prev;
-	// }
-	// head = tmp;
-
-}
-
-void Physics::resolveCollisions(List* head){
+void Physics::boundariesCollisions(List* head){
 
     List* tmp = head;
 
@@ -65,11 +52,19 @@ void Physics::resolveCollisions(List* head){
                 head->object->x = x_bound_down  - head->object->radius;
                 head->object->vx *= -1 * dampening;
             }
+            else if (head->object->x  - head->object->radius < x_bound_top) {
+                head->object->x = x_bound_top + head->object->radius;
+                head->object->vx *= -1 * dampening;
+            }
 
 		}
 		head = head->prev;
 	}
 	head = tmp;
+}
+
+void Physics::resolveCollisions(List* head){
+    
 }
 
 void Physics::gravity(List* head,double t){
@@ -78,7 +73,7 @@ void Physics::gravity(List* head,double t){
 	while (head != NULL) {
 		if (head->object != nullptr) {
 
-            head->object->vy -= GRAVITY*t;
+            head->object->vy += GRAVITY*t;
             head->object->y += head->object->vy*t;
 
 		}

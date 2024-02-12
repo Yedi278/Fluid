@@ -71,8 +71,7 @@ void Engine::handleEvents() {
 void Engine::update(double time) {
 
 	phy->gravity(objList->head,time);
-	// objList->update_all(time);
-	phy->resolveCollisions(objList->head);
+	phy->boundariesCollisions(objList->head);
 	
 	counter++;
 }

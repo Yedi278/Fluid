@@ -16,7 +16,7 @@ public:
     Physics(int x_top, int x_down, int y_top, int y_down);
     ~Physics();
 
-    void boundariesCollisions();
+    void boundariesCollisions(List* head);
     void resolveCollisions(List* head);
     void gravity(List* head,double t);
 };
