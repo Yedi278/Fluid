@@ -17,6 +17,6 @@ public:
     ~Physics();
 
     void boundariesCollisions();
-    void resolveCollisions();
-    void gravity(double t);
+    void resolveCollisions(List* head);
+    void gravity(List* head,double t);
 };

@@ -1,6 +1,6 @@
 #include "Physics.h"
 #include <iostream>
-#define GRAVITY 1000
+#define GRAVITY 0.0002
 #define dampening 0.3
 #define PI 3.14159265
 
@@ -8,10 +8,10 @@ Physics::Physics(List* head)
 {
     this->head = head;
     this->x_bound_top = 0;
-    this->x_bound_down = 500;
+    this->x_bound_down = 600;
 
     this->y_bound_top = 0;
-    this->y_bound_down = 500;
+    this->y_bound_down = 600;
 
 }
 
@@ -43,35 +43,42 @@ void Physics::boundariesCollisions(){
 
 }
 
-void Physics::resolveCollisions(){
+void Physics::resolveCollisions(List* head){
 
+    List* tmp = head;
 
-    // List* tmp = this->head;
-    // std::cout << this->head->object->y << std::endl;
+	while (head != NULL) {
+		if (head->object != nullptr) {
 
-	// while (this->head != NULL) {
-	// 	if (this->head->object != nullptr) {
+            std::cout << head->object->y + head->object->radius << std::endl;
 
-    //         std::cout << this->head->object->y << std::endl;
+            if (head->object->y  + head->object->radius > y_bound_down) {
+                head->object->y = y_bound_down  - head->object->radius;
+                head->object->vy *= -1 * dampening;
+            }
+            else if (head->object->y  - head->object->radius < y_bound_top) {
+                head->object->y = y_bound_top + head->object->radius;
+                head->object->vy *= -1 * dampening;
+            }
 
-    //         if (this->head->object->y >= this->y_bound_down) {
-    //             this->head->object->y = this->y_bound_down;
-    //             this->head->object->vy *= -1 * dampening;
-    //         }
+            if (head->object->x  + head->object->radius > x_bound_down) {
+                head->object->x = x_bound_down  - head->object->radius;
+                head->object->vx *= -1 * dampening;
+            }
 
-	// 	}
-	// 	this->head = this->head->prev;
-	// }
-	// this->head = tmp;
+		}
+		head = head->prev;
+	}
+	head = tmp;
 }
 
-void Physics::gravity(double t){
+void Physics::gravity(List* head,double t){
     
     List* tmp = head;
 	while (head != NULL) {
 		if (head->object != nullptr) {
 
-            head->object->vy += GRAVITY*t;
+            head->object->vy -= GRAVITY*t;
             head->object->y += head->object->vy*t;
 
 		}

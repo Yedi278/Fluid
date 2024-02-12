@@ -32,7 +32,7 @@ void Engine::init(bool fullscreen) {
 		this->phy = new Physics(this->objList->head);
 
 
-		Vector2* vect = new Vector2(200,200);
+		Vector2* vect = new Vector2(000,000);
 		addObj(vect);
 		Vector2* vect2 = new Vector2(300, 200);
 		addObj(vect2);
@@ -45,7 +45,7 @@ void Engine::init(bool fullscreen) {
 
 void Engine::addObj(Vector2* vect) {
 
-	GameObject* obj = new GameObject(renderer, vect ,0);
+	GameObject* obj = new GameObject(renderer, vect ,0,40);
 	objList->append_top(obj);
 	
 }
@@ -70,12 +70,10 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
-	// phy->gravity(time);
-	objList->update_all(time);
-	// std::cout << objList->head->object->y << std::endl;
-	phy->resolveCollisions();
+	phy->gravity(objList->head,time);
+	// objList->update_all(time);
+	phy->resolveCollisions(objList->head);
 	
-	// std::cout << counter << std::endl;
 	counter++;
 }
 
