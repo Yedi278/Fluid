@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Engine.h"
 #include "GameObject.h"
+#define FPS_LIMIT 60
 
 Engine* eng = nullptr;
 
@@ -18,16 +19,16 @@ int main() {
 		a = SDL_GetTicks();
 		delta = a - b;
 
-		if (delta > 1000 / 60.0)
+		eng->handleEvents();
+		if (delta > 1000 / FPS_LIMIT)
 		{
 			std::cout << "fps: " << 1000/delta << std::endl;
 
-			eng->handleEvents();
 			eng->update(delta);
-			eng->render();
 			
 			b = a;
 		}
+		eng->render();
 
 	}
 	eng->clear();

@@ -32,12 +32,12 @@ void Engine::init(bool fullscreen) {
 		this->phy = new Physics(this->objList->head);
 
 
-		Vector2* vect = new Vector2(000,000);
-		addObj(vect);
-		Vector2* vect2 = new Vector2(300, 200);
-		addObj(vect2);
-		Vector2* vect3 = new Vector2(400, 200);
-		addObj(vect3);
+		// Vector2* vect = new Vector2(100,000);
+		// addObj(vect);
+		// Vector2* vect2 = new Vector2(100, 200);
+		// addObj(vect2);
+		// Vector2* vect3 = new Vector2(400, 200);
+		// addObj(vect3);
 		
 		running = true;
 	}
@@ -45,7 +45,7 @@ void Engine::init(bool fullscreen) {
 
 void Engine::addObj(Vector2* vect) {
 
-	GameObject* obj = new GameObject(renderer, vect ,0,40);
+	GameObject* obj = new GameObject(renderer, vect ,0,10);
 	objList->append_top(obj);
 	
 }
@@ -70,9 +70,17 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
+	Vector2* vect3 = new Vector2(300, 300);
+
+	if(counter % 10 == 0 && counter < 2000){
+		
+		addObj(vect3);
+
+	}
+
 	phy->gravity(objList->head,time);
 	phy->boundariesCollisions(objList->head);
-	
+	phy->resolveCollisions(objList->head);
 	counter++;
 }
 

@@ -1,5 +1,6 @@
 #include "Vector2.h"
-# define M_PI	3.14159265358979323846  /* pi */
+#include "math.h"
+// # define M_PI	3.14159265358979323846  /* pi */
 
 
 
@@ -71,9 +72,9 @@ double Vector2::get_angle(int x1, int y1, int x2, int y2) {
 		return -atan((y2 - y1) / (x2 - x1));
 	}
 	else if (x2 == x1) {
-		return M_PI/2;
+		return M_PI;
 	}
-	return M_PI*3/2;
+	return 0;
 }
 
 void Vector2::scale(int alpha) {

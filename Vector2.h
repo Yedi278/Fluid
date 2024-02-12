@@ -22,7 +22,6 @@ public:
 	void update(int x, int y, int xf, int yf);
 
 	double get_angle(int x1, int y1, int x2, int y2);
-
 	void scale(int alpha);
 };
 

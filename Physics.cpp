@@ -1,8 +1,11 @@
 #include "Physics.h"
+#include "math.h"
+// #include "Vector2.h"
 #include <iostream>
 #define GRAVITY 0.0002
-#define dampening 0.3
-#define PI 3.14159265
+#define dampening 0.2
+#define dampening2 0.3
+// #define M_PI 3.14159265358979323846
 
 Physics::Physics(List* head)
 {
@@ -37,8 +40,6 @@ void Physics::boundariesCollisions(List* head){
 	while (head != NULL) {
 		if (head->object != nullptr) {
 
-            std::cout << head->object->y + head->object->radius << std::endl;
-
             if (head->object->y  + head->object->radius > y_bound_down) {
                 head->object->y = y_bound_down  - head->object->radius;
                 head->object->vy *= -1 * dampening;
@@ -63,8 +64,67 @@ void Physics::boundariesCollisions(List* head){
 	head = tmp;
 }
 
+double distance(GameObject* obj1, GameObject* obj2){
+
+    return sqrt(pow((obj1->x-obj2->x),2) + pow((obj1->y-obj2->y),2));
+}
+
 void Physics::resolveCollisions(List* head){
     
+    List* tmp = head;
+        while (head != NULL) {
+            if (head->object != nullptr) {
+                
+                ////////////////////////////
+                List* tmp2 = head;
+                head = tmp;
+                while (head != NULL) {
+                    if (head->object != nullptr) {
+
+                        if(head != tmp2){
+
+                            double d = distance(tmp2->object,head->object) - tmp2->object->radius - head->object->radius;
+                            if(d < 1){
+                                srand(time(nullptr));
+                                double ang = Vector2(0,0).get_angle(tmp2->object->x,
+                                    tmp2->object->y,head->object->x,head->object->y);
+                                // std::cout << ang << ", " << d << std::endl;
+                                head->object->x += -d*cos(ang);
+                                head->object->y += -d*sin(ang);
+
+                                // head->object->vx *= 0;
+                                // head->object->vy *= 0;
+
+                                // head->object->vx *= -dampening2;//* head->object->vx;
+                                // head->object->vy *= -dampening2;//* head->object->vy;
+
+                                if(ang == 0 || ang == M_PI){
+
+                                    if(head->object->vy < 0.3){
+                                        
+                                        head->object->x += pow(-1,1+(rand()%2))*0.01;
+                                        head->object->y += pow(-1,1+(rand()%2))*0.01;
+
+                                    }
+                                
+                                }
+
+
+                            }
+                        
+                        }
+
+                    }
+                    head = head->prev;
+                }
+                head = tmp2;
+                /////////////////////////////
+
+            }
+            head = head->prev;
+        }
+        head = tmp;
+
 }
 
 void Physics::gravity(List* head,double t){
