@@ -69,9 +69,20 @@ void ObjectArray::update_all(){
 
 		}
 	}
-
 }
 
+void ObjectArray::add(GameObject* obj, int pos){
+
+	array[pos].obj = obj;
+}
+
+void ObjectArray::add(int pos){
+	
+	Vector2* vect = new Vector2(200,200);
+	GameObject* tmp = new GameObject(vect);
+	array[pos].obj = tmp;
+
+}
 
 
 //////////////////////////////////////////////////

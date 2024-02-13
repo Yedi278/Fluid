@@ -29,3 +29,6 @@ void GameObject::render(SDL_Renderer* parent_renderer) {
 	SDL_RenderFillRect(parent_renderer, rect);
 
 }
+
+void GameObject::update(Uint32 t){
+}

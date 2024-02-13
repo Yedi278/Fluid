@@ -31,15 +31,17 @@ void Engine::init(bool fullscreen) {
 		objArr->init(window);
 		
 		phy = new Physics(objArr);
-		
+		addObj(nullptr);
+
+
 		running = true;
 	}
 }
 
 void Engine::addObj(Vector2* vect) {
 
-	GameObject* obj = new GameObject(vect, 10);
-	objList->append_top(obj);
+	// GameObject* obj = new GameObject(vect, 10);
+	objArr->add(2);
 	
 }
 

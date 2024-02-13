@@ -4,10 +4,10 @@ class Physics
 {
 private:
     int x_bound_top = 0;
-    int x_bound_down = 500;
+    int x_bound_down = 600;
 
     int y_bound_top = 0;
-    int y_bound_down = 500;
+    int y_bound_down = 600;
     ObjectArray* objArr = nullptr;
 
 public:

@@ -12,6 +12,7 @@ int main() {
 
 	unsigned int a = SDL_GetTicks();
 	unsigned int b = SDL_GetTicks();
+
 	double delta = 0;
 
 	while (eng->isRunning()) {
@@ -28,6 +29,7 @@ int main() {
 			b = a;
 		}
 		eng->render();
+
 
 	}
 	eng->clear();

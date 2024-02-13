@@ -27,5 +27,5 @@ public:
 
 	void update(Uint32 t);
 	void render(SDL_Renderer* parent_renderer);
-	void collider();
+	
 };

@@ -22,8 +22,9 @@ public:
 	void printArray();
 	void update_all();
 	void render_all();
-	void add(GameObject* obj);
-	
+	void add(GameObject* obj, int pos);
+	void add(int pos);
+
 };
 
 //////////////////////////////////////
