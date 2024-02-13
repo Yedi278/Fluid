@@ -12,7 +12,6 @@ private:
 
 public:
 
-	int id = 0;
 	Uint8 type = BASIC_TYPE;
 
 	float x = 0;
@@ -21,9 +20,8 @@ public:
 	float vy = 0;
 	float radius = 20;
 
-
-	GameObject(SDL_Renderer* prtRndr, Vector2* vect, int id);
-	GameObject(SDL_Renderer* prtRndr, Vector2* vect, int id, float radius);
+	GameObject(Vector2* vect);
+	GameObject(Vector2* vect, float radius);
 
 	~GameObject();
 

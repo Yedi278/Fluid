@@ -16,6 +16,7 @@ private:
 	SDL_Window* window = nullptr;
 
 	ObjectList* objList = nullptr;
+	ObjectArray* objArr = nullptr;
 	Physics* phy = nullptr;
 	Uint32 counter = 0;
 
@@ -24,6 +25,7 @@ public:
 	Engine(const char* title,Uint16 width, Uint16 height);
 	~Engine();
 
+	bool pause = false;
 	void init(bool fullscreen);
 	void addObj(Vector2* vect);
 	void handleEvents();

@@ -20,7 +20,7 @@ int main() {
 		delta = a - b;
 
 		eng->handleEvents();
-		if (delta > 1000 / FPS_LIMIT)
+		if (delta > 1000 / FPS_LIMIT && !eng->pause)
 		{
 			// SDL_Log("FPS: %f",1000/delta);
 			eng->update(delta);

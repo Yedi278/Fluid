@@ -8,16 +8,15 @@ private:
 
     int y_bound_top = 0;
     int y_bound_down = 500;
-
-    List* head = nullptr;
+    ObjectArray* objArr = nullptr;
 
 public:
-    Physics(List* head);
-    Physics(int x_top, int x_down, int y_top, int y_down);
+    Physics(ObjectArray* objArr);
+    Physics(ObjectArray* objArr,int x_top, int x_down, int y_top, int y_down);
     ~Physics();
 
-    void boundariesCollisions(List* head);
-    void resolveCollisions(List* head);
-    void gravity(List* head,double t);
+    void boundariesCollisions();
+    void resolveCollisions();
+    void gravity(double t);
     float SmoothingKernel(float radius, float dist);
 };
