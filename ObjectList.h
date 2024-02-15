@@ -9,6 +9,8 @@ struct ArrayNode{
 class ObjectArray{
 
 private:
+	int w_c;
+	int h_c;
 	SDL_Renderer* rndr = nullptr;
 
 public:

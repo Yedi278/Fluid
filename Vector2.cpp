@@ -33,16 +33,6 @@ Vector2::Vector2(int x, int y, int xf, int yf) {
 	this->angle = get_angle(x, y, xf, yf);
 }
 
-Vector2 Vector2::operator+(Vector2 const& vect) {
-
-	Vector2* tmp = new Vector2(0,0);
-	tmp->x = this->x + vect.x;
-	tmp->y = this->y + vect.y;
-	tmp->xf = this->xf + vect.xf;
-	tmp->yf = this->yf + vect.yf;
-
-	return *tmp;
-}
 
 void Vector2::update(int x, int y, double mod, double angle) {
 	this->x = x;
@@ -71,7 +61,7 @@ double Vector2::get_angle(int x1, int y1, int x2, int y2) {
 	else if (x2<x1) {
 		return -atan((y2 - y1) / (x2 - x1));
 	}
-	else if (x2 == x1) {
+	else if (x2 == x1 & y2 < y1) {
 		return M_PI;
 	}
 	return 0;

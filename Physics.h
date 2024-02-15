@@ -16,7 +16,9 @@ public:
     ~Physics();
 
     void boundariesCollisions();
-    void resolveCollisions();
+    void resolveCollisions(double time);
     void gravity(double t);
     float SmoothingKernel(float radius, float dist);
+    float Density(Vector2* pos);
+
 };

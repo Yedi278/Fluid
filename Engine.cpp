@@ -27,21 +27,18 @@ void Engine::init(bool fullscreen) {
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width, height, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
-		objArr = new ObjectArray(renderer, 10);
-		objArr->init(window);
+		objArr = new ObjectArray(renderer, 7);
+		// objArr->init(window);
 		
 		phy = new Physics(objArr);
-		addObj(nullptr);
-
-
+		
 		running = true;
 	}
 }
 
-void Engine::addObj(Vector2* vect) {
+void Engine::addObj(int index) {
 
-	// GameObject* obj = new GameObject(vect, 10);
-	objArr->add(2);
+	objArr->add(index);
 	
 }
 
@@ -56,7 +53,14 @@ void Engine::handleEvents() {
 		break;
 	case SDL_KEYDOWN:
 		if (event.key.keysym.sym == SDLK_SPACE) {
-			pause = true;
+			if(pause){ 
+				SDL_SetWindowTitle(window,"Fluid Simulation ~ [Running]");
+				pause = false;
+			}
+			else{
+				SDL_SetWindowTitle(window,"Fluid Simulation ~ [Pause]");
+				pause = true;
+			}
 		}
 		break;
 	default:
@@ -66,10 +70,13 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
-
 	phy->gravity(time);
 	phy->boundariesCollisions();
-	// phy->resolveCollisions();
+	phy->resolveCollisions(time);
+
+	if(counter < 30 ){
+		addObj(counter);
+	}
 	counter++;
 }
 
@@ -88,6 +95,8 @@ void Engine::clear() {
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	// delete objArr;
+	// delete phy;
 	SDL_Quit();
 
 }

@@ -27,7 +27,7 @@ public:
 
 	bool pause = false;
 	void init(bool fullscreen);
-	void addObj(Vector2* vect);
+	void addObj(int index);
 	void handleEvents();
 	void update(double time);
 	void render();
