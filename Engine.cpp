@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Grid.h"
 
 Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 
@@ -26,11 +27,12 @@ void Engine::init(bool fullscreen) {
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width, height, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
-		objArr = new ObjectArray(renderer, 1300);
+		objArr = new ObjectArray(renderer, 2000);
 		// objArr->init(window);
+		Grid* g = new Grid(window);
 		
 		phy = new Physics(objArr);
-		
+
 		running = true;
 	}
 }
@@ -73,7 +75,7 @@ void Engine::update(double time) {
 	phy->boundariesCollisions();
 	phy->resolveCollisions(time);
 
-	if(counter <= objArr->size){
+	if(counter <= objArr->size && counter < 500){
 		addObj(counter);
 	}
 	counter++;

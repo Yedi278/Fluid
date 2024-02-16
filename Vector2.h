@@ -21,6 +21,6 @@ public:
 	void update(int x, int y, double mod, double angle);
 	void update(int x, int y, int xf, int yf);
 
-	double get_angle(int x1, int y1, int x2, int y2);
+	float get_angle(float x1, float y1, float x2, float y2);
 	void scale(int alpha);
 };

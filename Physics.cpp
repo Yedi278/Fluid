@@ -2,9 +2,9 @@
 #include "Physics.h"
 #include "math.h"
 
-#define GRAVITY 400
-#define dampening 0.2
-#define dampening2 0.3
+#define GRAVITY 800
+#define DAMPENING 0
+#define DAMP 0.9
 #define SmthRadius 100
 #define CONST 0.5
 
@@ -26,15 +26,22 @@ double calcolaAngolo(double x1, double y1, double x2, double y2) {
     if (angoloGradi < 0) {
         angoloGradi += 360.0;
     }
-
-    return angoloGradi;
+    if(deltaX < 0){
+        return angoloRad + M_PI/2;
+    }
+    return angoloRad;
 }
 
 double distance(GameObject* obj1, GameObject* obj2){
 
-    return sqrt(pow((obj1->x-obj2->x),2) + pow((obj1->y-obj2->y),2));
+    return sqrt(pow((obj1->x - obj2->x),2) + pow((obj1->y - obj2->y),2));
 }
 
+float max(float x, float y){
+    if(x > y) return x;
+    else return y;
+    return y;
+}
 
 Physics::Physics(ObjectArray* objArr)
 {
@@ -58,7 +65,6 @@ Physics::~Physics()
     }
 }
 
-
 void Physics::gravity(double t){
     
     // SDL_Log("%f",t);
@@ -71,12 +77,6 @@ void Physics::gravity(double t){
 
         }
     }
-}
-
-float max(float x, float y){
-    if(x > y) return x;
-    else return y;
-    return y;
 }
 
 float Physics::SmoothingKernel(float radius, float dist){
@@ -92,20 +92,20 @@ void Physics::boundariesCollisions(){
 
             if(objArr->array[i].obj->y > y_bound_down- objArr->array[i].obj->radius){
                 objArr->array[i].obj->y = y_bound_down  - objArr->array[i].obj->radius;
-                objArr->array[i].obj->vy *= -1 * dampening;
+                objArr->array[i].obj->vy *= -1 * DAMPENING;
             }
             else if(objArr->array[i].obj->y < y_bound_top+ objArr->array[i].obj->radius){
                 objArr->array[i].obj->y = y_bound_top  + objArr->array[i].obj->radius;
-                objArr->array[i].obj->vy *= -1 * dampening;
+                objArr->array[i].obj->vy *= -1 * DAMPENING;
             }
 
             if(objArr->array[i].obj->x > x_bound_down- objArr->array[i].obj->radius){
                 objArr->array[i].obj->x = x_bound_down  - objArr->array[i].obj->radius;
-                objArr->array[i].obj->vx *= -1 * dampening;
+                objArr->array[i].obj->vx *= -1 * DAMPENING;
             }
             else if(objArr->array[i].obj->x < x_bound_top+ objArr->array[i].obj->radius){
                 objArr->array[i].obj->x = x_bound_top  + objArr->array[i].obj->radius;
-                objArr->array[i].obj->vx *= -1 * dampening;
+                objArr->array[i].obj->vx *= -1 * DAMPENING;
             }
 
         }
@@ -129,29 +129,30 @@ void Physics::resolveCollisions(double time){
 
     for(int i=0; i<objArr->size; i++){
         for(int j=0; j<objArr->size; j++){
-            
             if((objArr->array[i].obj != nullptr) & (objArr->array[j].obj != nullptr) & (i != j)){
 
                 float d = distance(objArr->array[i].obj, objArr->array[j].obj);
                 float k = objArr->array[i].obj->radius + objArr->array[j].obj->radius;
 
-                if( d - k < 0){
+                if( k - d > 1 ){
 
                     float ang = calcolaAngolo(objArr->array[i].obj->x,objArr->array[i].obj->y,objArr->array[j].obj->x,objArr->array[j].obj->y);
-                    
-                    float y = CONST*(d-k)*cos(ang);
-                    float x = CONST*(d-k)*sin(ang);
-                    
-                    // SDL_Log("%lf",time);
-                    // SDL_Log("%f,%f,%f",d,d-k,ang);
-                    // SDL_Log("%f,%f",x,y);
-                    
+                    // SDL_Log("%d : %f",i,d);
+
+                    float x = CONST*abs(d-k)*cos(ang + M_PI/2);
+                    float y = CONST*abs(d-k)*sin(ang + M_PI/2);
+
+                    // SDL_Log("%f, %f , %f",ang*360/M_PI,x,y);
+
                     objArr->array[i].obj->x += x;
                     objArr->array[i].obj->y += y;
                     objArr->array[j].obj->x -= x;
                     objArr->array[j].obj->y -= y;
 
-
+                    objArr->array[i].obj->vx *= DAMP;
+                    objArr->array[i].obj->vy *= DAMP;
+                    objArr->array[j].obj->vx *= DAMP;
+                    objArr->array[j].obj->vy *= DAMP;
                 }
             }
         }

@@ -51,18 +51,21 @@ void Vector2::update(int x, int y, int xf, int yf) {
 	this->angle = get_angle(x, y, xf, yf);
 }
 
-double Vector2::get_angle(int x1, int y1, int x2, int y2) {
+float Vector2::get_angle(float x1, float y1, float x2, float y2) {
+    // Calcola le differenze nelle coordinate
+    //GIRO ANTIORARIO DA DESTRA
+    float deltaX = x2 - x1;
+    float deltaY = y2 - y1;
 
-	if (x2>x1) {
-		return atan((y2 - y1) / (x2 - x1));
-	}
-	else if (x2<x1) {
-		return -atan((y2 - y1) / (x2 - x1));
-	}
-	else if (x2 == x1 & y2 < y1) {
-		return M_PI;
-	}
-	return 0;
+    float angoloRad = atan2(deltaY, deltaX);
+
+    float angoloGradi = angoloRad * (180.0 / M_PI);
+
+    if (angoloGradi < 0) {
+        angoloGradi += 360.0;
+    }
+
+    return angoloGradi;
 }
 
 void Vector2::scale(int alpha) {

@@ -21,8 +21,6 @@ public:
 	~ObjectArray();
 	
 	void init(SDL_Window* window);
-	void printArray();
-	void update_all();
 	void render_all();
 	void add(GameObject* obj, int pos);
 	void add(int pos);

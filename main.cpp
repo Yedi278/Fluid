@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 #define FPS_LIMIT 60
-#define TIME_RATE 1
+#define TIME_RATE 0.5
 
 Engine* eng = nullptr;
 
@@ -25,17 +25,15 @@ int main() {
 		delta = a - b;
 
 		eng->handleEvents();
-		if (delta > 1000 / FPS_LIMIT & !eng->pause)
+		if (delta > (double)1000 / FPS_LIMIT & !eng->pause)
 		{	
 			double time = (double)delta/1000;
-			// SDL_Log("delta: %ld",delta);
-			SDL_Log("FPS: %d",1000/delta);
-			eng->update(TIME_RATE*time);
+			// SDL_Log("FPS: %d",1000/delta);
+			eng->update(TIME_RATE*1/FPS_LIMIT);
 			b = a;
 		}
 		eng->render();
 
-		c = SDL_GetTicks();
 	}
 	eng->clear();
 	return 0;
