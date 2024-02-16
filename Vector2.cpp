@@ -1,8 +1,6 @@
 #include "Vector2.h"
 #include "math.h"
-// # define M_PI	3.14159265358979323846  /* pi */
-
-
+// #define M_PI 3.141592
 
 Vector2::Vector2(int xf, int yf) {
 	this->x = 0;

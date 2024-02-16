@@ -1,5 +1,4 @@
 #include "Engine.h"
-#include <iostream>
 
 Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 
@@ -27,7 +26,7 @@ void Engine::init(bool fullscreen) {
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width, height, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
-		objArr = new ObjectArray(renderer, 7);
+		objArr = new ObjectArray(renderer, 1300);
 		// objArr->init(window);
 		
 		phy = new Physics(objArr);
@@ -74,7 +73,7 @@ void Engine::update(double time) {
 	phy->boundariesCollisions();
 	phy->resolveCollisions(time);
 
-	if(counter < 30 ){
+	if(counter <= objArr->size){
 		addObj(counter);
 	}
 	counter++;
@@ -95,8 +94,6 @@ void Engine::clear() {
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
-	// delete objArr;
-	// delete phy;
 	SDL_Quit();
 
 }

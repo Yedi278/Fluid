@@ -2,11 +2,11 @@
 #include "Physics.h"
 #include "math.h"
 
-#define GRAVITY 0.0002
+#define GRAVITY 400
 #define dampening 0.2
 #define dampening2 0.3
 #define SmthRadius 100
-#define CONST 0.3
+#define CONST 0.5
 
 int signum(float x){
 	if(x<0) return -1;
@@ -61,6 +61,7 @@ Physics::~Physics()
 
 void Physics::gravity(double t){
     
+    // SDL_Log("%f",t);
     for(int i=0; i< objArr->size; i++){
 
         if(objArr->array[i].obj != nullptr){
@@ -138,12 +139,12 @@ void Physics::resolveCollisions(double time){
 
                     float ang = calcolaAngolo(objArr->array[i].obj->x,objArr->array[i].obj->y,objArr->array[j].obj->x,objArr->array[j].obj->y);
                     
-                    float x = CONST*(d-k)*cos(ang);
-                    float y = CONST*(d-k)*sin(ang);
+                    float y = CONST*(d-k)*cos(ang);
+                    float x = CONST*(d-k)*sin(ang);
                     
                     // SDL_Log("%lf",time);
                     // SDL_Log("%f,%f,%f",d,d-k,ang);
-                    SDL_Log("%f,%f",x,y);
+                    // SDL_Log("%f,%f",x,y);
                     
                     objArr->array[i].obj->x += x;
                     objArr->array[i].obj->y += y;

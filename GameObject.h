@@ -21,7 +21,7 @@ public:
 	float ax = 0;
 	float ay = 0;
 
-	float radius = 20;
+	float radius = 5;
 
 	GameObject(Vector2* vect);
 	GameObject(float x,float y,float vx,float vy);

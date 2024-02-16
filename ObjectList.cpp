@@ -1,5 +1,4 @@
 #include "ObjectList.h"
-#include <iostream>
 
 ObjectArray::ObjectArray(SDL_Renderer* rndr, int size){
 
@@ -44,7 +43,6 @@ void ObjectArray::init(SDL_Window* window){
 			int y = k2 + 2*r*j;
 			Vector2* v = new Vector2(x,y);
 			
-			// SDL_Log("%d, %d : %d",i,j,ind);
 			array[2].obj = new GameObject(v);
 			index++;//ciao, u little idiot//
 		}
