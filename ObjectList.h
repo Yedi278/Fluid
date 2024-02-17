@@ -23,7 +23,7 @@ public:
 	void init(SDL_Window* window);
 	void render_all();
 	void add(GameObject* obj, int pos);
-	void add(int pos);
+	void add(int index, int x, int y);
 
 };
 

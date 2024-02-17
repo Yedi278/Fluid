@@ -34,5 +34,6 @@ public:
 
 	void update(Uint32 t);
 	void render(SDL_Renderer* parent_renderer);
+	void fill_circle(SDL_Renderer *rdr);
 	void pos(float x, float y);
 };

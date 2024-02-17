@@ -18,13 +18,11 @@ void ObjectArray::init(SDL_Window* window){
 
 void ObjectArray::render_all(){
 
-	// SDL_Rect* rect = new SDL_Rect();
-
 	for(int i=0; i<size; i++){
 
 		if(array[i].obj != nullptr){
 
-			array[i].obj->render(rndr);
+			array[i].obj->fill_circle(rndr);
 
 		}
 	}
@@ -35,9 +33,9 @@ void ObjectArray::add(GameObject* obj, int pos){
 	array[pos].obj = obj;
 }
 
-void ObjectArray::add(int pos){
+void ObjectArray::add(int index, int x, int y){
 	
-	GameObject* tmp = new GameObject(300,200,0,0,0,0);
-	array[pos].obj = tmp;
+	GameObject* tmp = new GameObject(x,y,0,0,0,0);
+	array[index].obj = tmp;
 
 }

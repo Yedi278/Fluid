@@ -14,21 +14,20 @@ int signum(float x){
 }
 
 double calcolaAngolo(double x1, double y1, double x2, double y2) {
-    // Calcola le differenze nelle coordinate
-    //GIRO ANTIORARIO DA DESTRA
-    double deltaX = x2 - x1;
-    double deltaY = y2 - y1;
+    
+    const double deltaX = x2 - x1;
+    const double deltaY = y2 - y1;
 
-    double angoloRad = atan2(deltaY, deltaX);
+    double angoloRad = -atan2(-deltaY, deltaX);
+    double angoloGrad = angoloRad * 360 / (2*M_PI);
+    
+    // if(deltaX < 0 & deltaY > 0){
+    //     return M_PI - angoloRad;
+    // }
+    // if(deltaX < 0 & deltaY < 0){
+    //     return M_PI + angoloRad;
+    // }
 
-    double angoloGradi = angoloRad * (180.0 / M_PI);
-
-    if (angoloGradi < 0) {
-        angoloGradi += 360.0;
-    }
-    if(deltaX < 0){
-        return angoloRad + M_PI/2;
-    }
     return angoloRad;
 }
 
@@ -43,9 +42,11 @@ float max(float x, float y){
     return y;
 }
 
-Physics::Physics(ObjectArray* objArr)
+Physics::Physics(ObjectArray* objArr,SDL_Window* window)
 {
     this->objArr = objArr;
+    this->window = window;
+    SDL_GetWindowSize(window,&this->x_bound_down,&this->y_bound_down);
 }
 
 Physics::Physics(ObjectArray* objArr,int x_top, int x_down, int y_top, int y_down)
@@ -65,24 +66,34 @@ Physics::~Physics()
     }
 }
 
+void Physics::update(double t){
+
+    for(int i=0; i<objArr->size; i++){
+        if(objArr->array[i].obj != nullptr){
+
+            objArr->array[i].obj->vx += objArr->array[i].obj->ax*t;    
+            objArr->array[i].obj->x += 0.5*objArr->array[i].obj->ax*t*t + objArr->array[i].obj->vx*t;
+
+            objArr->array[i].obj->vy += objArr->array[i].obj->ay*t;    
+            objArr->array[i].obj->y += 0.5*objArr->array[i].obj->ay*t*t + objArr->array[i].obj->vy*t;
+        
+        }
+
+    }
+}
+
 void Physics::gravity(double t){
     
-    // SDL_Log("%f",t);
     for(int i=0; i< objArr->size; i++){
 
         if(objArr->array[i].obj != nullptr){
 
-            objArr->array[i].obj->vy += GRAVITY*t;
-            objArr->array[i].obj->y += objArr->array[i].obj->vy*t;
+            // objArr->array[i].obj->vy += GRAVITY*t;
+            // objArr->array[i].obj->y += objArr->array[i].obj->vy*t;
+            objArr->array[i].obj->ay = GRAVITY;
 
         }
     }
-}
-
-float Physics::SmoothingKernel(float radius, float dist){
-
-    // SDL_Log("%f",max(0,radius-dist));
-    return pow(max(0,radius-dist),3);
 }
 
 void Physics::boundariesCollisions(){
@@ -92,37 +103,28 @@ void Physics::boundariesCollisions(){
 
             if(objArr->array[i].obj->y > y_bound_down- objArr->array[i].obj->radius){
                 objArr->array[i].obj->y = y_bound_down  - objArr->array[i].obj->radius;
-                objArr->array[i].obj->vy *= -1 * DAMPENING;
+                // objArr->array[i].obj->ay *= -DAMPENING;
+                objArr->array[i].obj->vy *= -DAMPENING;
             }
             else if(objArr->array[i].obj->y < y_bound_top+ objArr->array[i].obj->radius){
                 objArr->array[i].obj->y = y_bound_top  + objArr->array[i].obj->radius;
-                objArr->array[i].obj->vy *= -1 * DAMPENING;
+                objArr->array[i].obj->vy *= -DAMPENING;
             }
 
             if(objArr->array[i].obj->x > x_bound_down- objArr->array[i].obj->radius){
                 objArr->array[i].obj->x = x_bound_down  - objArr->array[i].obj->radius;
-                objArr->array[i].obj->vx *= -1 * DAMPENING;
+                // objArr->array[i].obj->ax *= -DAMPENING;
+                objArr->array[i].obj->vx *= -DAMPENING;
             }
             else if(objArr->array[i].obj->x < x_bound_top+ objArr->array[i].obj->radius){
                 objArr->array[i].obj->x = x_bound_top  + objArr->array[i].obj->radius;
-                objArr->array[i].obj->vx *= -1 * DAMPENING;
+                objArr->array[i].obj->vx *= -DAMPENING;
             }
+            
+
 
         }
     }
-}
-
-float Physics::Density(Vector2* samplePoint){
-
-    float dens = 0;
-    const float mass = 1;
-    for(int i=0; i<objArr->size; i++){
-
-        float dist = sqrt(pow((objArr->array[i].obj->x-samplePoint->xf),2) + pow((objArr->array[i].obj->y-samplePoint->yf),2));
-        float influence = SmoothingKernel(SmthRadius,dist);
-        dens += mass*influence;
-    }
-    return dens;
 }
 
 void Physics::resolveCollisions(double time){
@@ -134,25 +136,24 @@ void Physics::resolveCollisions(double time){
                 float d = distance(objArr->array[i].obj, objArr->array[j].obj);
                 float k = objArr->array[i].obj->radius + objArr->array[j].obj->radius;
 
-                if( k - d > 1 ){
+                if( k - d > 0 ){
 
                     float ang = calcolaAngolo(objArr->array[i].obj->x,objArr->array[i].obj->y,objArr->array[j].obj->x,objArr->array[j].obj->y);
-                    // SDL_Log("%d : %f",i,d);
+                    
+                    double x = -CONST*abs(d-k)*cos(ang);
+                    double y = -CONST*abs(d-k)*sin(ang);
 
-                    float x = CONST*abs(d-k)*cos(ang + M_PI/2);
-                    float y = CONST*abs(d-k)*sin(ang + M_PI/2);
-
-                    // SDL_Log("%f, %f , %f",ang*360/M_PI,x,y);
+                    // SDL_Log("i:%d a:%f x:%lf y:%lf , abd:%f",i, atan2(-10,0), x,y, d);
 
                     objArr->array[i].obj->x += x;
                     objArr->array[i].obj->y += y;
                     objArr->array[j].obj->x -= x;
                     objArr->array[j].obj->y -= y;
 
-                    objArr->array[i].obj->vx *= DAMP;
-                    objArr->array[i].obj->vy *= DAMP;
-                    objArr->array[j].obj->vx *= DAMP;
-                    objArr->array[j].obj->vy *= DAMP;
+                    // objArr->array[i].obj->vx *= DAMP;
+                    // objArr->array[i].obj->vy *= DAMP;
+                    // objArr->array[j].obj->vx *= DAMP;
+                    // objArr->array[j].obj->vy *= DAMP;
                 }
             }
         }

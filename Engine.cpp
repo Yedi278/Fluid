@@ -28,18 +28,16 @@ void Engine::init(bool fullscreen) {
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
 		objArr = new ObjectArray(renderer, 2000);
-		// objArr->init(window);
-		Grid* g = new Grid(window);
-		
-		phy = new Physics(objArr);
+		phy = new Physics(objArr,window);
+
 
 		running = true;
 	}
 }
 
-void Engine::addObj(int index) {
+void Engine::addObj(int index, int x, int y) {
 
-	objArr->add(index);
+	objArr->add(index,x,y);
 	
 }
 
@@ -64,19 +62,30 @@ void Engine::handleEvents() {
 			}
 		}
 		break;
+	
 	default:
+		if(event.button.button == SDL_BUTTON_LEFT){
+			int posx;
+			int posy;
+			SDL_GetMouseState(&posx,&posy);
+			moveObjects(posx,posy);
+		}
 		break;
 	}
 }
 
 void Engine::update(double time) {
 
+
+	phy->update(time);
 	phy->gravity(time);
 	phy->boundariesCollisions();
 	phy->resolveCollisions(time);
+	phy->boundariesCollisions();
+	phy->resolveCollisions(time);
 
-	if(counter <= objArr->size && counter < 500){
-		addObj(counter);
+	if(counter <= objArr->size && counter < 100){
+		addObj(counter,200,200);
 	}
 	counter++;
 }
@@ -97,5 +106,22 @@ void Engine::clear() {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
+
+}
+
+void Engine::moveObjects(int mx,int my){
+
+	for(int i=0; i<objArr->size; i++){
+		GameObject* tmp = objArr->array[i].obj;
+		if(tmp != nullptr){
+			if(tmp->x - tmp->radius < mx  && mx < tmp->x + tmp->radius 
+				& tmp->y - tmp->radius < my && my < tmp->y + tmp->radius){
+					
+					tmp->x = mx;
+					tmp->y = my;
+			}
+		}
+
+	}
 
 }

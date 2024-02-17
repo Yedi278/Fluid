@@ -27,15 +27,16 @@ public:
 
 	bool pause = false;
 	void init(bool fullscreen);
-	void addObj(int index);
+	void addObj(int index, int x, int y);
 	void handleEvents();
 	void update(double time);
 	void render();
-	void clear();
+	void moveObjects(int mx, int my);
 
 	bool isRunning() {
 		return running;
 	}
+	void clear();
 
 };
 
