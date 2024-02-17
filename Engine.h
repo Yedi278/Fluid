@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #undef main
 #include "GameObject.h"
-#include "ObjectList.h"
+#include "ObjectArray.h"
 #include "Physics.h"
 
 class Engine

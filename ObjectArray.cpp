@@ -1,4 +1,4 @@
-#include "ObjectList.h"
+#include "ObjectArray.h"
 
 ObjectArray::ObjectArray(SDL_Renderer* rndr, int size){
 

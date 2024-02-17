@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Physics.h"
 #include "math.h"
 

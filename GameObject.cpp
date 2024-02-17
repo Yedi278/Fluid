@@ -1,6 +1,3 @@
-#ifndef IMAGESANDITEMS
-#define IMAGESANDITEMS
-#endif
 #include "GameObject.h"
 
 GameObject::GameObject(Vector2* vect) {

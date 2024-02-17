@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Engine.h"
-#include "GameObject.h"
 
 #define FPS_LIMIT 60
 #define TIME_RATE 0.5
