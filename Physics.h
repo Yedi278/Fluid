@@ -1,4 +1,5 @@
 #include "ObjectArray.h"
+#include "Grid.h"
 
 class Physics
 {
@@ -6,6 +7,7 @@ private:
 
 
     ObjectArray* objArr = nullptr;
+    Grid* grid = nullptr;
     SDL_Window* window = nullptr;
 
     int x_bound_top = 0;
@@ -15,8 +17,7 @@ private:
     int y_bound_down = 400;
 
 public:
-    Physics(ObjectArray* objArr,SDL_Window* window);
-    Physics(ObjectArray* objArr,int x_top, int x_down, int y_top, int y_down);
+    Physics(SDL_Window* window, Grid* grid);
     ~Physics();
 
     void update(double t);

@@ -1,5 +1,4 @@
 #include "Engine.h"
-// #include "Grid.h"
 
 Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 
@@ -28,22 +27,15 @@ void Engine::init(bool fullscreen) {
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
 		objArr = new ObjectArray(renderer, 2000);
-		phy = new Physics(objArr,window);
+		grid = new Grid(window,renderer);
+		phy = new Physics(window,grid);
 
-		grid = new Grid(window);
-		
-		GameObject* o = new GameObject(200,200,0,0);
-
-		grid->put(o,200,200);
+		grid->put(200,200);
+		grid->put(400,400);
+		grid->put(300,300);
 
 		running = true;
 	}
-}
-
-void Engine::addObj(int index, int x, int y) {
-
-	objArr->add(index,x,y);
-	
 }
 
 void Engine::handleEvents() {
@@ -82,8 +74,8 @@ void Engine::handleEvents() {
 void Engine::update(double time) {
 
 	grid->update();
-	// phy->update(time);
-	// phy->gravity(time);
+	phy->update(time);
+	phy->gravity(time);
 	// phy->boundariesCollisions();
 	// phy->resolveCollisions(time);
 	// phy->boundariesCollisions();
@@ -100,7 +92,8 @@ void Engine::render() {
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-	objArr->render_all();
+	grid->renderAll();
+	// objArr->render_all();
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderPresent(renderer);

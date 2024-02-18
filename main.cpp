@@ -23,13 +23,15 @@ int main() {
 		delta = a - b;
 
 		eng->handleEvents();
-		if (delta > (double)1000 / FPS_LIMIT & !eng->pause)
-		{	
+		if (delta > (double)1000 / FPS_LIMIT & !eng->pause){
+
 			double time = (double)delta/1000;
 			// SDL_Log("FPS: %d",1000/delta);
 			eng->update(TIME_RATE*1/FPS_LIMIT);
 			b = a;
+
 		}
+		
 		eng->render();
 
 	}

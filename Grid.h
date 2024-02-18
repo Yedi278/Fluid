@@ -1,4 +1,5 @@
-#include "ObjectArray.h"
+#include "SDL2/SDL.h"
+#include "GameObject.h"
 
 struct ArrayNode2{
 	int id = 0;
@@ -15,20 +16,26 @@ private:
     int h = 0;
     int w_cell;
     int h_cell;
+    Uint8 radius = 10;
 
 public:
 
     const int density = 10;
     const int size = 1000;
-    const int single_cell_size = 100;
+    const int single_cell_size = 10;
 
     int*** cells = nullptr;
-    ArrayNode* objects = nullptr;
+    ArrayNode2* objects = nullptr;
 
 
-    Grid(SDL_Window* window);
+    Grid(SDL_Window* window, SDL_Renderer* rnd);
     ~Grid();
-    void put(GameObject* obj, int x, int y);
+    
+    int put(int x, int y);
     void update();
+    void getCell(int id, int* i, int * j);
+    void renderAll();
+    void fillCicle(int r, int x, int y);
+    void printCells();
 
 };

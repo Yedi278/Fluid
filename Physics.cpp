@@ -7,9 +7,12 @@
 #define SmthRadius 100
 #define CONST 0.5
 
-int signum(float x){
-	if(x<0) return -1;
-	if(x>0) return 1;
+
+Physics::~Physics()
+{
+    if(this != nullptr){
+        delete this;
+    }
 }
 
 double calcolaAngolo(double x1, double y1, double x2, double y2) {
@@ -34,58 +37,37 @@ float max(float x, float y){
     return y;
 }
 
-Physics::Physics(ObjectArray* objArr,SDL_Window* window)
+Physics::Physics(SDL_Window* window, Grid* grid)
 {
-    this->objArr = objArr;
+    this->grid = grid;
     this->window = window;
     SDL_GetWindowSize(window,&this->x_bound_down,&this->y_bound_down);
 }
 
-Physics::Physics(ObjectArray* objArr,int x_top, int x_down, int y_top, int y_down)
-{
-    this->objArr = objArr;
-    this->x_bound_top = x_top;
-    this->x_bound_down = x_down;
-    this->y_bound_top = y_top;
-    this->y_bound_down = y_down;
-
-}
-
-Physics::~Physics()
-{
-    if(this != nullptr){
-        delete this;
-    }
-}
-
 void Physics::update(double t){
 
-    for(int i=0; i<objArr->size; i++){
-        if(objArr->array[i].obj != nullptr){
+    for(int i=0; i<grid->size;i++){
+        if(grid->objects[i].obj != nullptr){
 
-            objArr->array[i].obj->vx += objArr->array[i].obj->ax*t;    
-            objArr->array[i].obj->x += 0.5*objArr->array[i].obj->ax*t*t + objArr->array[i].obj->vx*t;
+            grid->objects[i].obj->vx += grid->objects[i].obj->ax*t;    
+            grid->objects[i].obj->x += 0.5*grid->objects[i].obj->ax*t*t + grid->objects[i].obj->vx*t;
 
-            objArr->array[i].obj->vy += objArr->array[i].obj->ay*t;    
-            objArr->array[i].obj->y += 0.5*objArr->array[i].obj->ay*t*t + objArr->array[i].obj->vy*t;
+            grid->objects[i].obj->vy += grid->objects[i].obj->ay*t;    
+            grid->objects[i].obj->y += 0.5*grid->objects[i].obj->ay*t*t + grid->objects[i].obj->vy*t;
         
         }
-
     }
 }
 
 void Physics::gravity(double t){
     
-    for(int i=0; i< objArr->size; i++){
+    for(int i=0; i<grid->size;i++){
+        if(grid->objects[i].obj != nullptr){
 
-        if(objArr->array[i].obj != nullptr){
-
-            // objArr->array[i].obj->vy += GRAVITY*t;
-            // objArr->array[i].obj->y += objArr->array[i].obj->vy*t;
-            objArr->array[i].obj->ay = GRAVITY;
-
+            grid->objects[i].obj->ay = GRAVITY;
         }
     }
+    
 }
 
 void Physics::boundariesCollisions(){
