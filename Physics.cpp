@@ -18,14 +18,7 @@ double calcolaAngolo(double x1, double y1, double x2, double y2) {
     const double deltaY = y2 - y1;
 
     double angoloRad = -atan2(-deltaY, deltaX);
-    double angoloGrad = angoloRad * 360 / (2*M_PI);
-    
-    // if(deltaX < 0 & deltaY > 0){
-    //     return M_PI - angoloRad;
-    // }
-    // if(deltaX < 0 & deltaY < 0){
-    //     return M_PI + angoloRad;
-    // }
+    // double angoloGrad = angoloRad * 360 / (2*M_PI);
 
     return angoloRad;
 }
@@ -102,7 +95,7 @@ void Physics::boundariesCollisions(){
 
             if(objArr->array[i].obj->y > y_bound_down- objArr->array[i].obj->radius){
                 objArr->array[i].obj->y = y_bound_down  - objArr->array[i].obj->radius;
-                // objArr->array[i].obj->ay *= -DAMPENING;
+                objArr->array[i].obj->ay -= GRAVITY;
                 objArr->array[i].obj->vy *= -DAMPENING;
             }
             else if(objArr->array[i].obj->y < y_bound_top+ objArr->array[i].obj->radius){
@@ -133,7 +126,7 @@ void Physics::resolveCollisions(double time){
             if((objArr->array[i].obj != nullptr) & (objArr->array[j].obj != nullptr) & (i != j)){
 
                 float d = distance(objArr->array[i].obj, objArr->array[j].obj);
-                float k = objArr->array[i].obj->radius + objArr->array[j].obj->radius;
+                const float k = objArr->array[i].obj->radius + objArr->array[j].obj->radius;
 
                 if( k - d > 0 ){
 
@@ -141,18 +134,11 @@ void Physics::resolveCollisions(double time){
                     
                     double x = -CONST*abs(d-k)*cos(ang);
                     double y = -CONST*abs(d-k)*sin(ang);
-
-                    // SDL_Log("i:%d a:%f x:%lf y:%lf , abd:%f",i, atan2(-10,0), x,y, d);
-
+                    
                     objArr->array[i].obj->x += x;
                     objArr->array[i].obj->y += y;
                     objArr->array[j].obj->x -= x;
                     objArr->array[j].obj->y -= y;
-
-                    // objArr->array[i].obj->vx *= DAMP;
-                    // objArr->array[i].obj->vy *= DAMP;
-                    // objArr->array[j].obj->vx *= DAMP;
-                    // objArr->array[j].obj->vy *= DAMP;
                 }
             }
         }

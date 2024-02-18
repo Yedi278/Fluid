@@ -1,6 +1,6 @@
 #include "ObjectArray.h"
 
-struct ArrayNode{
+struct ArrayNode2{
 	int id = 0;
 	GameObject* obj = nullptr;
 };

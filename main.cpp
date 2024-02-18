@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Engine.h"
 
 #define FPS_LIMIT 60

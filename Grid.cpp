@@ -26,14 +26,40 @@ Grid::Grid(SDL_Window* window)
         for(int j=0; j<density; j++){
 
             cells[i][j] = new int[single_cell_size];
-            
         }
     }
 }
 
 void Grid::put(GameObject* obj, int x, int y){
 
-    int x_ind = x/w_cell;
-    int y_ind = y/h_cell;
+    // int x_ind = x/w_cell;
+    // int y_ind = y/h_cell;
+
+    for(int i=0; i<size; i++){
+        if(objects[i].obj == nullptr){
+
+            objects[i].id = i;
+            objects[i].obj = obj;
+            break;
+        }
+    }
+}
+
+void Grid::update(){
+
+    for(int i=0; i<size; i++){
+
+        GameObject* tmp = objects[i].obj;
+        int id = objects[i].id;
+
+        if(tmp != nullptr){
+
+            int x = tmp->x / w_cell;
+            int y = tmp->y / h_cell;
+
+            SDL_Log("i:%d x:%d y:%d",id,x,y);
+        }
+
+    }
 
 }

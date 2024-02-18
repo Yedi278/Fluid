@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "Grid.h"
+// #include "Grid.h"
 
 Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 
@@ -30,6 +30,11 @@ void Engine::init(bool fullscreen) {
 		objArr = new ObjectArray(renderer, 2000);
 		phy = new Physics(objArr,window);
 
+		grid = new Grid(window);
+		
+		GameObject* o = new GameObject(200,200,0,0);
+
+		grid->put(o,200,200);
 
 		running = true;
 	}
@@ -76,17 +81,17 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
+	grid->update();
+	// phy->update(time);
+	// phy->gravity(time);
+	// phy->boundariesCollisions();
+	// phy->resolveCollisions(time);
+	// phy->boundariesCollisions();
+	// phy->resolveCollisions(time);
 
-	phy->update(time);
-	phy->gravity(time);
-	phy->boundariesCollisions();
-	phy->resolveCollisions(time);
-	phy->boundariesCollisions();
-	phy->resolveCollisions(time);
-
-	if(counter <= objArr->size && counter < 100){
-		addObj(counter,200,200);
-	}
+	// if(counter <= objArr->size && counter < 100){
+	// 	addObj(counter,200,200);
+	// }
 	counter++;
 }
 
@@ -119,9 +124,7 @@ void Engine::moveObjects(int mx,int my){
 					
 					tmp->x = mx;
 					tmp->y = my;
-			}
-		}
-
-	}
-
+}
+}
+}
 }

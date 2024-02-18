@@ -1,9 +1,10 @@
 #pragma once
 #include <SDL2/SDL.h>
 #undef main
-#include "GameObject.h"
+// #include "GameObject.h"
 #include "ObjectArray.h"
 #include "Physics.h"
+#include "Grid.h"
 
 class Engine
 {
@@ -18,6 +19,7 @@ private:
 	ObjectList* objList = nullptr;
 	ObjectArray* objArr = nullptr;
 	Physics* phy = nullptr;
+	Grid* grid = nullptr;
 	Uint32 counter = 0;
 
 public:

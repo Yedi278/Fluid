@@ -1,4 +1,7 @@
 
-
+~WINDOWS~
 g++ -o FluidSIM main.cpp Engine.cpp ObjectList.cpp GameObject.cpp Vector2.cpp Physics.cpp -IC:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\include -LC:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\lib -lmingw32 -lSDL2main -lSDL2
 
+
+~LINUX~
+g++ main.cpp GameObject.cpp ObjectArray.cpp Physics.cpp Vector2.cpp Engine.cpp Grid.cpp -lSDL2main -lSDL2 -o Fluid
