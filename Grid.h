@@ -22,7 +22,7 @@ public:
 
     const int density = 10;
     const int size = 1000;
-    const int single_cell_size = 10;
+    const int single_cell_size = 100;
 
     int*** cells = nullptr;
     ArrayNode2* objects = nullptr;
@@ -37,5 +37,5 @@ public:
     void renderAll();
     void fillCicle(int r, int x, int y);
     void printCells();
-
+    void clean();
 };

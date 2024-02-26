@@ -18,7 +18,7 @@ public:
 
 	float x = 0;
 	float y = 0;
-	float vx = 0;
+	float vx = 10;
 	float vy = 0;
 	float ax = 0;
 	float ay = 0;
@@ -32,8 +32,8 @@ public:
 
 	~GameObject();
 
-	void update(Uint32 t);
-	void render(SDL_Renderer* parent_renderer);
+	// void update(Uint32 t);
+	// void render(SDL_Renderer* parent_renderer);
 	void fill_circle(SDL_Renderer *rdr);
 	void pos(float x, float y);
 };

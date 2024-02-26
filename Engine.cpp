@@ -29,10 +29,7 @@ void Engine::init(bool fullscreen) {
 		objArr = new ObjectArray(renderer, 2000);
 		grid = new Grid(window,renderer);
 		phy = new Physics(window,grid);
-
-		grid->put(200,200);
-		grid->put(400,400);
-		grid->put(300,300);
+		
 
 		running = true;
 	}
@@ -73,17 +70,16 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
-	grid->update();
-	phy->update(time);
 	phy->gravity(time);
-	// phy->boundariesCollisions();
-	// phy->resolveCollisions(time);
-	// phy->boundariesCollisions();
-	// phy->resolveCollisions(time);
+	phy->update(time);
+	phy->resolveCollisions(time);
+	phy->boundariesCollisions();
+	grid->clean();
+	grid->update();
 
-	// if(counter <= objArr->size && counter < 100){
-	// 	addObj(counter,200,200);
-	// }
+	if(counter <= grid->size && counter < 2){
+		grid->put(300,200);
+	}
 	counter++;
 }
 
@@ -93,7 +89,6 @@ void Engine::render() {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
 	grid->renderAll();
-	// objArr->render_all();
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderPresent(renderer);

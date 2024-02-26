@@ -7,7 +7,7 @@ Engine* eng = nullptr;
 
 int main() {
 	
-	eng = new Engine("Fluid Simulation", 600,600);
+	eng = new Engine("Fluid Simulation", 700,700);
 	eng->init(false);
 
 	Uint32 a = SDL_GetTicks();

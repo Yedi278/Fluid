@@ -2,11 +2,9 @@
 #include "math.h"
 
 #define GRAVITY 800
-#define DAMPENING 0
-#define DAMP 0.9
-#define SmthRadius 100
+#define DAMPENING 0.4
+#define AIR_RESIST 0
 #define CONST 0.5
-
 
 Physics::~Physics()
 {
@@ -54,7 +52,10 @@ void Physics::update(double t){
 
             grid->objects[i].obj->vy += grid->objects[i].obj->ay*t;    
             grid->objects[i].obj->y += 0.5*grid->objects[i].obj->ay*t*t + grid->objects[i].obj->vy*t;
-        
+
+            grid->objects[i].obj->vx *= 1-AIR_RESIST;
+            grid->objects[i].obj->vy *= 1-AIR_RESIST;
+
         }
     }
 }
@@ -72,30 +73,28 @@ void Physics::gravity(double t){
 
 void Physics::boundariesCollisions(){
 
-    for(int i=0; i<objArr->size; i++){
-        if(objArr->array[i].obj != nullptr){
+    for(int i=0; i<grid->size; i++){
+        if(grid->objects[i].obj != nullptr && grid->objects[i].id != -1){
 
-            if(objArr->array[i].obj->y > y_bound_down- objArr->array[i].obj->radius){
-                objArr->array[i].obj->y = y_bound_down  - objArr->array[i].obj->radius;
-                objArr->array[i].obj->ay -= GRAVITY;
-                objArr->array[i].obj->vy *= -DAMPENING;
+            if(grid->objects[i].obj->y > y_bound_down - grid->objects[i].obj->radius){
+                grid->objects[i].obj->y = y_bound_down  - grid->objects[i].obj->radius;
+                grid->objects[i].obj->ay *= 0;
+                grid->objects[i].obj->vy *= -DAMPENING;
             }
-            else if(objArr->array[i].obj->y < y_bound_top+ objArr->array[i].obj->radius){
-                objArr->array[i].obj->y = y_bound_top  + objArr->array[i].obj->radius;
-                objArr->array[i].obj->vy *= -DAMPENING;
+            else if(grid->objects[i].obj->y < y_bound_top+ grid->objects[i].obj->radius){
+                grid->objects[i].obj->y = y_bound_top  + grid->objects[i].obj->radius;
+                grid->objects[i].obj->vy *= -DAMPENING;
             }
 
-            if(objArr->array[i].obj->x > x_bound_down- objArr->array[i].obj->radius){
-                objArr->array[i].obj->x = x_bound_down  - objArr->array[i].obj->radius;
-                // objArr->array[i].obj->ax *= -DAMPENING;
-                objArr->array[i].obj->vx *= -DAMPENING;
+            if(grid->objects[i].obj->x > x_bound_down- grid->objects[i].obj->radius){
+                grid->objects[i].obj->x = x_bound_down  - grid->objects[i].obj->radius;
+                // grid->objects[i].obj->ax *= -DAMPENING;
+                grid->objects[i].obj->vx *= -DAMPENING;
             }
-            else if(objArr->array[i].obj->x < x_bound_top+ objArr->array[i].obj->radius){
-                objArr->array[i].obj->x = x_bound_top  + objArr->array[i].obj->radius;
-                objArr->array[i].obj->vx *= -DAMPENING;
+            else if(grid->objects[i].obj->x < x_bound_top+ grid->objects[i].obj->radius){
+                grid->objects[i].obj->x = x_bound_top  + grid->objects[i].obj->radius;
+                grid->objects[i].obj->vx *= -DAMPENING;
             }
-            
-
 
         }
     }
@@ -103,24 +102,44 @@ void Physics::boundariesCollisions(){
 
 void Physics::resolveCollisions(double time){
 
-    for(int i=0; i<objArr->size; i++){
-        for(int j=0; j<objArr->size; j++){
-            if((objArr->array[i].obj != nullptr) & (objArr->array[j].obj != nullptr) & (i != j)){
+    for(int i=0; i<grid->density; i++){
+        for(int j=0; j<grid->density; j++){
+            for(int k=0; k<grid->single_cell_size; k++){
 
-                float d = distance(objArr->array[i].obj, objArr->array[j].obj);
-                const float k = objArr->array[i].obj->radius + objArr->array[j].obj->radius;
+                int index_fixed = grid->cells[i][j][k];
 
-                if( k - d > 0 ){
+                for(int l=i-1; l<i+1; l++){
+                    for(int m=j-1; m<j+1; m++){
+                        for(int n=0; n<grid->single_cell_size; n++){
+                            
 
-                    float ang = calcolaAngolo(objArr->array[i].obj->x,objArr->array[i].obj->y,objArr->array[j].obj->x,objArr->array[j].obj->y);
-                    
-                    double x = -CONST*abs(d-k)*cos(ang);
-                    double y = -CONST*abs(d-k)*sin(ang);
-                    
-                    objArr->array[i].obj->x += x;
-                    objArr->array[i].obj->y += y;
-                    objArr->array[j].obj->x -= x;
-                    objArr->array[j].obj->y -= y;
+                            if(l<0 || m<0 || l>grid->single_cell_size 
+                                || m>grid->single_cell_size || index_fixed == -1) continue;
+
+                            int index_changing = grid->cells[l][m][n];
+                            if(index_changing == -1 || index_changing == index_fixed) continue;
+
+                            float d = distance(grid->objects[index_fixed].obj,grid->objects[index_changing].obj);
+
+                            const float rSum = grid->objects[index_fixed].obj->radius + grid->objects[index_changing].obj->radius;
+
+                            if( rSum - d > 0 ){
+
+                                float ang = calcolaAngolo(grid->objects[index_fixed].obj->x,grid->objects[index_fixed].obj->y,
+                                    grid->objects[index_changing].obj->x,grid->objects[index_changing].obj->y);
+                                
+                                double x = -CONST*abs(d-rSum)*cos(ang);
+                                double y = -CONST*abs(d-rSum)*sin(ang);
+                                
+                                grid->objects[index_fixed].obj->x += x;
+                                grid->objects[index_fixed].obj->y += y;
+                                grid->objects[index_changing].obj->x -= x;
+                                grid->objects[index_changing].obj->y -= y;
+                                // SDL_Log("[%d][%d] : Ang:%f, x:%lf y:%lf",index_fixed,index_changing,ang,x,y);
+
+                            }
+                        }
+                    }
                 }
             }
         }

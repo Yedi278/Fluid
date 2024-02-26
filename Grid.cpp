@@ -1,7 +1,7 @@
 #include "Grid.h"
 
 int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius);
-
+int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius);
 
 
 Grid::~Grid()
@@ -46,11 +46,10 @@ int Grid::put(int x, int y){
     for(int i=0; i<size; i++){
         if(objects[i].obj == nullptr){
 
-            GameObject* tmp = new GameObject(x,y,0,0);
             objects[i].id = i;
-            objects[i].obj = tmp;
-
+            objects[i].obj = new GameObject(x,y,0,0);
             return i;
+
         }
     }
     return -1;
@@ -59,8 +58,6 @@ int Grid::put(int x, int y){
 void Grid::update(){
 
     for(int i=0; i<size; i++){
-
-
         if(objects[i].obj != nullptr){
 
             GameObject* tmp = objects[i].obj;
@@ -71,16 +68,20 @@ void Grid::update(){
 
             for(int k=0; k<single_cell_size; k++){
 
+                if(cells[x][y][k] == id){
+                    break;
+                }
                 if(cells[x][y][k] == -1){
 
                     cells[x][y][k] = id;
                     break;
                 }
                 if(k == single_cell_size-1){
-                    SDL_LogError(SDL_LOG_CATEGORY_ERROR,"Out of Bounds Grid::Update()");
+
+                    SDL_LogError(SDL_LOG_CATEGORY_ERROR,"Out of Bounds for Grid::Update()");
+                
                 }
             }
-
         }
     }
 }
@@ -90,7 +91,7 @@ void Grid::getCell(int id, int* l, int * m){
     for (int i = 0; i < density; i++){
         for (int j = 0; j < density; j++){
             
-            for(int k = 0; k<single_cell_size; k++){
+            for(int k = 0; k < single_cell_size; k++){
 
                 if(cells[i][j][k] == id){
 
@@ -120,7 +121,7 @@ void Grid::renderAll(){
     for(int i=0; i<size; i++){
         if(objects[i].obj != nullptr){
 
-        SDL_RenderDrawCircle(rnd, objects[i].obj->x,objects[i].obj->y,10);
+        SDL_RenderFillCircle(rnd, objects[i].obj->x,objects[i].obj->y,objects[i].obj->radius);
 
         }
     }
@@ -142,6 +143,19 @@ void Grid::printCells(){
 	}
 }
 
+void Grid::clean(){
+
+    for(int i=0; i<density; i++){
+        for(int j=0; j<density; j++){
+            for(int k=0; k<single_cell_size; k++){
+
+                cells[i][j][k] = -1;
+
+            }
+        }
+    }
+}
+
 int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
 {
     int offsetx, offsety, d;
@@ -161,6 +175,50 @@ int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
         status += SDL_RenderDrawPoint(renderer, x + offsety, y - offsetx);
         status += SDL_RenderDrawPoint(renderer, x - offsetx, y - offsety);
         status += SDL_RenderDrawPoint(renderer, x - offsety, y - offsetx);
+
+        if (status < 0) {
+            status = -1;
+            break;
+        }
+
+        if (d >= 2*offsetx) {
+            d -= 2*offsetx + 1;
+            offsetx +=1;
+        }
+        else if (d < 2 * (radius - offsety)) {
+            d += 2 * offsety - 1;
+            offsety -= 1;
+        }
+        else {
+            d += 2 * (offsety - offsetx - 1);
+            offsety -= 1;
+            offsetx += 1;
+        }
+    }
+
+    return status;
+}
+
+int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
+{
+    int offsetx, offsety, d;
+    int status;
+
+    offsetx = 0;
+    offsety = radius;
+    d = radius -1;
+    status = 0;
+
+    while (offsety >= offsetx) {
+
+        status += SDL_RenderDrawLine(renderer, x - offsety, y + offsetx,
+                                     x + offsety, y + offsetx);
+        status += SDL_RenderDrawLine(renderer, x - offsetx, y + offsety,
+                                     x + offsetx, y + offsety);
+        status += SDL_RenderDrawLine(renderer, x - offsetx, y - offsety,
+                                     x + offsetx, y - offsety);
+        status += SDL_RenderDrawLine(renderer, x - offsety, y - offsetx,
+                                     x + offsety, y - offsetx);
 
         if (status < 0) {
             status = -1;
