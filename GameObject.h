@@ -1,7 +1,5 @@
 #pragma once
 #include <SDL2/SDL.h>
-// #include <SDL2/SDL_image.h>
-
 #include "Vector2.h"
 
 #define BASIC_TYPE 001
@@ -16,24 +14,20 @@ public:
 
 	Uint8 type = BASIC_TYPE;
 
-	float x = 0;
-	float y = 0;
-	float vx = 10;
-	float vy = 0;
-	float ax = 0;
-	float ay = 0;
+	Vector pos = Vector(0,0);
+	Vector vel = Vector(0,0);
+	Vector acc = Vector(0,0);
+	
 
-	float radius = 10;
+	float m = 0;  //mass
+	float radius = 30;
 
-	GameObject(Vector2* vect);
+	GameObject(Vector vect);
+	GameObject(Vector vect, float radius);
 	GameObject(float x,float y,float vx,float vy);
 	GameObject(float x,float y,float vx,float vy,float ax,float ay);
-	GameObject(Vector2* vect, float radius);
 
 	~GameObject();
-
-	// void update(Uint32 t);
-	// void render(SDL_Renderer* parent_renderer);
+	
 	void fill_circle(SDL_Renderer *rdr);
-	void pos(float x, float y);
 };

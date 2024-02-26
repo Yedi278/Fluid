@@ -1,3 +1,4 @@
+#pragma once
 #include "ObjectArray.h"
 #include "Grid.h"
 

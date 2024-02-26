@@ -1,75 +1,72 @@
 #include "Vector2.h"
-#include "math.h"
-// #define M_PI 3.141592
 
-Vector2::Vector2(int xf, int yf) {
-	this->x = 0;
-	this->y = 0;
-	this->module = sqrt((xf*xf) + (yf*yf));
-	this->angle = get_angle(0,0,xf,yf);
-	this->xf = xf;
-	this->yf = yf;
-}
-
-Vector2::Vector2(int x, int y, double mod, double angle) {
-	this->x = x;
-	this->y = y;
-	this->module = mod;
-	this->angle = angle;
-	this->xf = x+mod * sin(angle);
-	this->yf = y+mod * cos(angle);
-}
-
-Vector2::Vector2(int x, int y, int xf, int yf) {
+Vector::Vector(int x, int y) {
 
 	this->x = x;
 	this->y = y;
-	this->xf = xf;
-	this->yf = yf;
-
-	this->module = sqrt((x - xf) * (x - xf) + (y - yf) * (y - yf));
-	this->angle = get_angle(x, y, xf, yf);
+	
 }
 
+float Vector::angle(){
 
-void Vector2::update(int x, int y, double mod, double angle) {
-	this->x = x;
-	this->y = y;
-	this->module = mod;
-	this->angle = angle;
-	this->xf = x+mod * sin(angle);
-	this->yf = y+mod * cos(angle);
+    double angoloRad = -atan2(-this->y, this->x);
+    // double angoloGrad = angoloRad * 360 / (2*M_PI);
+
+    return angoloRad;
 }
 
-void Vector2::update(int x, int y, int xf, int yf) {
-	this->x = x;
-	this->y = y;
-	this->xf = xf;
-	this->yf = yf;
+float Vector::angleGrad(){
 
-	this->module = sqrt((x - xf) * (x - xf) + (y - yf) * (y - yf));
-	this->angle = get_angle(x, y, xf, yf);
+    double angoloRad = -atan2(-this->y, this->x);
+    double angoloGrad = angoloRad * 360 / (2*M_PI);
+
+    return angoloGrad;
 }
 
-float Vector2::get_angle(float x1, float y1, float x2, float y2) {
-    // Calcola le differenze nelle coordinate
-    //GIRO ANTIORARIO DA DESTRA
-    float deltaX = x2 - x1;
-    float deltaY = y2 - y1;
-
-    float angoloRad = atan2(deltaY, deltaX);
-
-    float angoloGradi = angoloRad * (180.0 / M_PI);
-
-    if (angoloGradi < 0) {
-        angoloGradi += 360.0;
-    }
-
-    return angoloGradi;
+float Vector::mod(){
+	return sqrt(pow(this->x,2) + pow(this->y,2));
 }
 
-void Vector2::scale(int alpha) {
+Vector Vector::operator+(Vector v){
+	return Vector(this->x + v.x, this->y + v.y);
+}
 
-	this->module *= alpha;
+Vector Vector::operator-(Vector v){
+	return Vector(this->x - v.x, this->y-v.y);
+}
 
+Vector Vector::operator*(float a){
+
+	float m = mod();
+	const float ang = angle();
+	m *= a;
+
+	return Vector(m*cos(ang), m*sin(ang));
+}
+
+Vector Vector::operator/(float a){
+
+	float m = mod();
+	const float ang = angle();
+	m /= a;
+
+	return Vector(m*cos(ang), m*sin(ang));
+}
+
+Vector Vector::operator+=(Vector v){
+
+	this->x += v.x;
+	this->y += v.y;
+}
+
+Vector Vector::operator-=(Vector v){
+
+	this->x -= v.x;
+	this->y -= v.y;
+}
+
+Vector Vector::operator*=(float v){
+
+	this->x = mod()*v*cos(angle());
+	this->y = mod()*v*sin(angle());
 }

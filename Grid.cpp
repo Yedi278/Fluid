@@ -63,8 +63,8 @@ void Grid::update(){
             GameObject* tmp = objects[i].obj;
 
             int id = objects[i].id;
-            int x = tmp->x / w_cell;
-            int y = tmp->y / h_cell;
+            int x = tmp->pos.x / w_cell;
+            int y = tmp->pos.y / h_cell;
 
             for(int k=0; k<single_cell_size; k++){
 
@@ -121,7 +121,7 @@ void Grid::renderAll(){
     for(int i=0; i<size; i++){
         if(objects[i].obj != nullptr){
 
-        SDL_RenderFillCircle(rnd, objects[i].obj->x,objects[i].obj->y,objects[i].obj->radius);
+        SDL_RenderFillCircle(rnd, objects[i].obj->pos.x,objects[i].obj->pos.y,objects[i].obj->radius);
 
         }
     }
@@ -135,7 +135,7 @@ void Grid::printCells(){
 
 				if(cells[i][j][k] != -1){
 
-					SDL_Log("cell[%d][%d][%d] - id: %d \t x:%f y:%f",i,j,k, cells[i][j][k], objects[cells[i][j][k]].obj->x, objects[cells[i][j][k]].obj->y);
+					SDL_Log("cell[%d][%d][%d] - id: %d \t x:%f y:%f",i,j,k, cells[i][j][k], objects[cells[i][j][k]].obj->pos.x, objects[cells[i][j][k]].obj->pos.y);
 				
                 }
 			}

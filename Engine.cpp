@@ -77,7 +77,7 @@ void Engine::update(double time) {
 	grid->clean();
 	grid->update();
 
-	if(counter <= grid->size && counter < 2){
+	if(counter <= grid->size && counter < 1){
 		grid->put(300,200);
 	}
 	counter++;
@@ -104,15 +104,15 @@ void Engine::clear() {
 
 void Engine::moveObjects(int mx,int my){
 
-	for(int i=0; i<objArr->size; i++){
-		GameObject* tmp = objArr->array[i].obj;
-		if(tmp != nullptr){
-			if(tmp->x - tmp->radius < mx  && mx < tmp->x + tmp->radius 
-				& tmp->y - tmp->radius < my && my < tmp->y + tmp->radius){
+// 	for(int i=0; i<objArr->size; i++){
+// 		GameObject* tmp = objArr->array[i].obj;
+// 		if(tmp != nullptr){
+// 			if(tmp->x - tmp->radius < mx  && mx < tmp->x + tmp->radius 
+// 				& tmp->y - tmp->radius < my && my < tmp->y + tmp->radius){
 					
-					tmp->x = mx;
-					tmp->y = my;
-}
-}
-}
+// 					tmp->x = mx;
+// 					tmp->y = my;
+// }
+// }
+// }
 }

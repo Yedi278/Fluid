@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 #define FPS_LIMIT 60
-#define TIME_RATE 0.5
+#define TIME_RATE 1
 
 Engine* eng = nullptr;
 
@@ -24,10 +24,8 @@ int main() {
 
 		eng->handleEvents();
 		if (delta > (double)1000 / FPS_LIMIT & !eng->pause){
-
-			double time = (double)delta/1000;
 			// SDL_Log("FPS: %d",1000/delta);
-			eng->update(TIME_RATE*1/FPS_LIMIT);
+			eng->update((double)TIME_RATE*10/FPS_LIMIT);
 			b = a;
 
 		}
