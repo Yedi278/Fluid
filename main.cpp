@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 #define FPS_LIMIT 60
-#define TIME_RATE 1
+#define TIME_RATE 1.3
 
 Engine* eng = nullptr;
 

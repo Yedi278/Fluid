@@ -26,11 +26,9 @@ void Engine::init(bool fullscreen) {
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width, height, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
-		objArr = new ObjectArray(renderer, 2000);
 		grid = new Grid(window,renderer);
 		phy = new Physics(window,grid);
 		
-
 		running = true;
 	}
 }
@@ -71,16 +69,18 @@ void Engine::handleEvents() {
 void Engine::update(double time) {
 
 	phy->gravity(time);
-	phy->update(time);
 	phy->resolveCollisions(time);
-	phy->boundariesCollisions();
+	phy->update(time);
+	phy->circBounds(Vector(width/2,height/2), circleBoundRadius, time);
 	grid->clean();
 	grid->update();
 
-	if(counter <= grid->size && counter < 1){
-		grid->put(300,200);
+	while(counter < 2){
+
+		grid->put(150,300);
+		counter ++;
 	}
-	counter++;
+
 }
 
 void Engine::render() {
@@ -89,30 +89,38 @@ void Engine::render() {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
 	grid->renderAll();
+	renderBorders();
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderPresent(renderer);
+}
+
+void Engine::renderBorders(){
+	
+	SDL_RenderDrawCircle(renderer,width/2,height/2,circleBoundRadius);
+
 }
 
 void Engine::clear() {
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	SDL_Log("Engine Closed!\n");
 	SDL_Quit();
-
+	
 }
 
 void Engine::moveObjects(int mx,int my){
 
-// 	for(int i=0; i<objArr->size; i++){
-// 		GameObject* tmp = objArr->array[i].obj;
-// 		if(tmp != nullptr){
-// 			if(tmp->x - tmp->radius < mx  && mx < tmp->x + tmp->radius 
-// 				& tmp->y - tmp->radius < my && my < tmp->y + tmp->radius){
-					
-// 					tmp->x = mx;
-// 					tmp->y = my;
-// }
-// }
-// }
+	const Vector mouse = Vector(mx,my);
+	for(auto node: grid->objects){
+		if(node.obj != nullptr){
+
+			if((node.obj->pos - mouse).mod() < node.obj->radius){
+				node.obj->pos = mouse;
+				node.obj->vel = Vector(0,0);
+			}
+
+		}
+	}
 }

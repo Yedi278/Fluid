@@ -9,6 +9,7 @@
 	],
 	"settings": {
 		"files.associations": {
+			"*.cpp": "cpp",
 			"array": "cpp",
 			"atomic": "cpp",
 			"bit": "cpp",
@@ -55,7 +56,33 @@
 			"stdexcept": "cpp",
 			"streambuf": "cpp",
 			"cinttypes": "cpp",
-			"typeinfo": "cpp"
+			"typeinfo": "cpp",
+			"optional": "cpp",
+			"fstream": "cpp",
+			"sstream": "cpp",
+			"charconv": "cpp",
+			"ranges": "cpp",
+			"xhash": "cpp",
+			"xlocale": "cpp",
+			"xlocinfo": "cpp",
+			"xmemory": "cpp",
+			"xstring": "cpp",
+			"xutility": "cpp",
+			"ctime": "cpp",
+			"map": "cpp",
+			"format": "cpp",
+			"ios": "cpp",
+			"locale": "cpp",
+			"queue": "cpp",
+			"span": "cpp",
+			"xfacet": "cpp",
+			"xiosbase": "cpp",
+			"xlocbuf": "cpp",
+			"xlocmes": "cpp",
+			"xlocmon": "cpp",
+			"xlocnum": "cpp",
+			"xloctime": "cpp",
+			"xtr1common": "cpp"
 		}
 	}
 }

@@ -34,16 +34,3 @@ GameObject::GameObject(Vector pos, float radius) {
 GameObject::~GameObject() {
 	delete this;
 }
-
-//Rubbata da internet :)
-void GameObject::fill_circle(SDL_Renderer *rdr)
-{
-	for (double dy = 1; dy <= this->radius; dy += 1.0)
-	{
-		double dx = floor(sqrt((2.0 * this->radius * dy) - (dy * dy)));
-		int x = this->pos.x - dx;
-		SDL_SetRenderDrawColor(rdr, 255,0,0,255);
-		SDL_RenderDrawLine(rdr, this->pos.x - dx, this->pos.y + dy - this->radius, this->pos.x + dx, this->pos.y + dy - this->radius);
-		SDL_RenderDrawLine(rdr, this->pos.x - dx, this->pos.y - dy + this->radius, this->pos.x + dx, this->pos.y - dy + this->radius);
-	}
-}

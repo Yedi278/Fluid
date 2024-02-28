@@ -10,11 +10,13 @@ public:
 	float x = 0;
 	float y = 0;
 
-	Vector(int x, int y);
+	Vector(float x, float y);
 
 	float angle();
+	void angle(float a);
 	float angleGrad();
 	float mod();
+	float mod(float a);
 
 	Vector operator+(Vector v);
 	Vector operator-(Vector v);
@@ -24,8 +26,6 @@ public:
 	Vector operator-=(Vector v);
 	Vector operator*=(float a);
 	Vector operator/=(Vector v);
+	Vector operator=(Vector v);
 
-
-
-	float distance(Vector v);
 };

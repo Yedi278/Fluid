@@ -19,8 +19,8 @@ public:
 	Vector acc = Vector(0,0);
 	
 
-	float m = 0;  //mass
-	float radius = 30;
+	float m = 1;  //mass
+	float radius = 40;
 
 	GameObject(Vector vect);
 	GameObject(Vector vect, float radius);
@@ -29,5 +29,4 @@ public:
 
 	~GameObject();
 	
-	void fill_circle(SDL_Renderer *rdr);
 };

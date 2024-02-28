@@ -1,13 +1,12 @@
 #pragma once
-#include "ObjectArray.h"
 #include "Grid.h"
+#include "math.h"
 
 class Physics
 {
 private:
 
 
-    ObjectArray* objArr = nullptr;
     Grid* grid = nullptr;
     SDL_Window* window = nullptr;
 
@@ -23,6 +22,7 @@ public:
 
     void update(double t);
     void boundariesCollisions();
+    void circBounds(Vector center, float radius, float time);
     void resolveCollisions(double time);
     void gravity(double t);
 

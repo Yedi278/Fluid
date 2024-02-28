@@ -1,9 +1,15 @@
 #pragma once
 #include "SDL2/SDL.h"
 #include "GameObject.h"
+#include "Draw.hpp"
+#include <vector>
 
-struct ArrayNode2{
-	int id = 0;
+#define DENSITY 30
+#define SINGLE_CELL_SIZE 10
+#define SIZE 1000
+
+struct Node{
+	int id = -1;
 	GameObject* obj = nullptr;
 };
 
@@ -17,7 +23,6 @@ private:
     int h = 0;
     int w_cell;
     int h_cell;
-    Uint8 radius = 10;
 
 public:
 
@@ -25,18 +30,17 @@ public:
     const int size = 1000;
     const int single_cell_size = 100;
 
-    int*** cells = nullptr;
-    ArrayNode2* objects = nullptr;
+    int cells[DENSITY][DENSITY][SINGLE_CELL_SIZE];
 
-
+    Node objects[SIZE];
+    
     Grid(SDL_Window* window, SDL_Renderer* rnd);
     ~Grid();
     
     int put(int x, int y);
     void update();
-    void getCell(int id, int* i, int * j);
     void renderAll();
-    void fillCicle(int r, int x, int y);
     void printCells();
+    void printObjs();
     void clean();
 };
