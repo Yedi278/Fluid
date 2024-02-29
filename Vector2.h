@@ -16,7 +16,7 @@ public:
 	void angle(float a);
 	float angleGrad();
 	float mod();
-	float mod(float a);
+	void mod(float a);
 
 	Vector operator+(Vector v);
 	Vector operator-(Vector v);

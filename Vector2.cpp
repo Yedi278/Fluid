@@ -33,7 +33,7 @@ float Vector::mod(){
 	return sqrt(pow(this->x,2) + pow(this->y,2));
 }
 
-float Vector::mod(float a){
+void Vector::mod(float a){
 
 	const float ang = angle();
 	this->x = a*cos(ang);

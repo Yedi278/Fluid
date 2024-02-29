@@ -2,8 +2,18 @@
 
 void SDL_RenderDrawArrow(SDL_Renderer* renderer, Vector center, Vector v){
 
-    const float alpha = 1;
-    SDL_RenderDrawLine(renderer, center.x, center.y, alpha*(center.x+v.x), alpha*(center.y+v.y));
+    const float alpha = 10;
+    Vector sum = (v*alpha)+center;
+
+    SDL_RenderDrawLine(renderer, center.x, center.y, sum.x, sum.y);
+    
+    Vector side = v*0.5;
+
+    side.angle(v.angle()-M_PI_2-M_PI_4);
+    SDL_RenderDrawLine(renderer, sum.x, sum.y, sum.x+side.x, sum.y+side.y);
+    side.angle(v.angle()+M_PI_2+M_PI_4);
+    SDL_RenderDrawLine(renderer, sum.x, sum.y, sum.x+side.x, sum.y+side.y);
+
 
 }
 
