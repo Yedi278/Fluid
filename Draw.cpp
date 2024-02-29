@@ -1,5 +1,12 @@
 #include "Draw.hpp"
 
+void SDL_RenderDrawArrow(SDL_Renderer* renderer, Vector center, Vector v){
+
+    const float alpha = 1;
+    SDL_RenderDrawLine(renderer, center.x, center.y, alpha*(center.x+v.x), alpha*(center.y+v.y));
+
+}
+
 int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
 {
     int offsetx, offsety, d;

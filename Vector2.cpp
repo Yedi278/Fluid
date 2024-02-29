@@ -66,19 +66,19 @@ Vector Vector::operator/(float a){
 	return Vector(m*cos(ang), m*sin(ang));
 }
 
-Vector Vector::operator+=(Vector v){
+void Vector::operator+=(Vector v){
 
 	this->x += v.x;
 	this->y += v.y;
 }
 
-Vector Vector::operator-=(Vector v){
+void Vector::operator-=(Vector v){
 
 	this->x -= v.x;
 	this->y -= v.y;
 }
 
-Vector Vector::operator*=(float v){
+void Vector::operator*=(float v){
 
 	float ang = angle();
 	this->x = mod()*v*cos(ang);
@@ -86,7 +86,7 @@ Vector Vector::operator*=(float v){
 
 }
 
-Vector Vector::operator=(Vector v){
+void Vector::operator=(Vector v){
 	this->x = v.x;
 	this->y = v.y;
 }

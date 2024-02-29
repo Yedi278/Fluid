@@ -68,12 +68,12 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
-	phy->gravity(time);
 	phy->resolveCollisions(time);
 	phy->update(time);
 	phy->circBounds(Vector(width/2,height/2), circleBoundRadius, time);
 	grid->clean();
 	grid->update();
+	phy->gravity(time);
 
 	while(counter < 2){
 
