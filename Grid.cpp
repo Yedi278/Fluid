@@ -74,6 +74,7 @@ void Grid::renderAll(){
         SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->vel);
         SDL_SetRenderDrawColor(rnd, 0,255,0,255);
         SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->acc);
+        SDL_RenderDrawLine(rnd, node.obj->pos.x, node.obj->pos.y, w/2,h/2);
 
         }
     }

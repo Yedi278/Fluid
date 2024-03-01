@@ -26,6 +26,8 @@ public:
 	bool pause = false;
 	bool circleBounds = true;
 	int circleBoundRadius = 300;
+
+	float energy = 0;
 	
 	void init(bool fullscreen);
 	void handleEvents();

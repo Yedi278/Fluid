@@ -20,7 +20,7 @@ public:
 	
 
 	float m = 1;  //mass
-	float radius = 40;
+	float radius = 20;
 
 	GameObject(Vector vect);
 	GameObject(Vector vect, float radius);

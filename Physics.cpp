@@ -1,9 +1,7 @@
 #include "Physics.h"
 
-#define GRAVITY 9.81
 #define DAMPENING 1
 #define AIR_RESIST 0 //from 0 to 1
-#define CONST 0.5
 
 Physics::~Physics()
 {
@@ -13,16 +11,15 @@ Physics::~Physics()
 }
 
 double calcolaAngolo(double x1, double y1, double x2, double y2){
-    
+   
     const double deltaX = x2 - x1;
     const double deltaY = y2 - y1;
 
-    double angoloRad = -atan2(-deltaY, deltaX);
+    double angoloRad = atan2(-deltaY, deltaX);
     // double angoloGrad = angoloRad * 360 / (2*M_PI);
 
     return angoloRad;
 }
-
 
 Physics::Physics(SDL_Window* window, Grid* grid)
 {
@@ -37,47 +34,19 @@ void Physics::update(double t){
 
         if(node.obj == nullptr) continue;
         
-        node.obj->vel += node.obj->acc * (0.5*t*t);
+        node.obj->vel += node.obj->acc *t;
         node.obj->pos += node.obj->vel * t;
         node.obj->acc = Vector(0,0);
     }
 }
 
 void Physics::gravity(double t){
+
     for(auto node : grid->objects){
         if(node.obj != nullptr){
             node.obj->acc += Vector(0,SDL_STANDARD_GRAVITY);
         }
     }
-}
-
-void Physics::boundariesCollisions(){
-
-    // for(int i=0; i<grid->size; i++){
-    //     if(grid->objects[i].obj != nullptr && grid->objects[i].id != -1){
-            
-    //         GameObject* tmp = grid->objects[i].obj;
-
-    //         if(tmp->pos.y > y_bound_down - tmp->radius){
-    //             tmp->pos.y = y_bound_down  - tmp->radius;
-    //             tmp->vel.y *= -DAMPENING;
-    //         }
-    //         else if(tmp->pos.y < y_bound_top+ tmp->radius){
-    //             tmp->pos.y = y_bound_top  + tmp->radius;
-    //             tmp->vel.y *= -DAMPENING;
-    //         }
-
-    //         if(tmp->pos.x > x_bound_down- tmp->radius){
-    //             tmp->pos.x = x_bound_down  - tmp->radius;
-    //             tmp->vel.x *= -DAMPENING;
-    //         }
-    //         else if(tmp->pos.x < x_bound_top+ tmp->radius){
-    //             tmp->pos.x = x_bound_top  + tmp->radius;
-    //             tmp->vel.x *= -DAMPENING;
-    //         }
-
-    //     }
-    // }
 }
 
 void Physics::circBounds(Vector center, float radius, float time){
@@ -92,8 +61,10 @@ void Physics::circBounds(Vector center, float radius, float time){
 
                 d.mod(radius - node.obj->radius);
                 node.obj->pos = center + d;
+
                 node.obj->vel += (node.obj->pos - oldpos)/time;
                 node.obj->vel *= DAMPENING;
+
             }
         }
     }
@@ -128,8 +99,9 @@ void Physics::resolveCollisions(double time){
                             if( rSum - dis.mod() > 0 ){
                                 
                                 dis.mod(dp*0.5);
-                                grid->objects[index_changing].obj->pos += dis;
-                                grid->objects[index_fixed].obj->pos -= dis;
+                                grid->objects[index_changing].obj->pos -= dis;
+                                grid->objects[index_fixed].obj->pos += dis;
+                                // SDL_Log("%f, %f",grid->objects[index_changing].obj->vel.mod(),grid->objects[index_fixed].obj->vel.mod());
                                 
                             }
                         }
@@ -138,4 +110,19 @@ void Physics::resolveCollisions(double time){
             }
         }
     }
+}
+
+float Physics::Energy(){
+
+    float energy = 0;
+
+    for(auto node : grid->objects){
+        if(node.obj != nullptr){
+
+            energy += 0.5* node.obj->m * pow(node.obj->vel.mod(),2);
+            energy += node.obj->m * SDL_STANDARD_GRAVITY * node.obj->pos.y;
+
+        }
+    }
+    return energy;
 }

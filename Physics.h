@@ -25,5 +25,5 @@ public:
     void circBounds(Vector center, float radius, float time);
     void resolveCollisions(double time);
     void gravity(double t);
-
+    float Energy();
 };

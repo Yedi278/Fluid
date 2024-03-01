@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include <iostream>
 
 Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 
@@ -43,6 +44,7 @@ void Engine::handleEvents() {
 		running = false;
 		break;
 	case SDL_KEYDOWN:
+
 		if (event.key.keysym.sym == SDLK_SPACE) {
 			if(pause){ 
 				SDL_SetWindowTitle(window,"Fluid Simulation ~ [Running]");
@@ -68,19 +70,20 @@ void Engine::handleEvents() {
 
 void Engine::update(double time) {
 
-	phy->resolveCollisions(time);
+	phy->gravity(time);
 	phy->update(time);
+	// phy->resolveCollisions(time);
 	phy->circBounds(Vector(width/2,height/2), circleBoundRadius, time);
 	grid->clean();
 	grid->update();
-	phy->gravity(time);
+	energy = phy->Energy();
 
-	while(counter < 2){
+	printf("Energy: %f\n",energy);
 
+	while(counter < 1){
 		grid->put(150,300);
 		counter ++;
 	}
-
 }
 
 void Engine::render() {
