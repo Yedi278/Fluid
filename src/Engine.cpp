@@ -76,13 +76,14 @@ void Engine::handleEvents() {
 	}
 }
 
-void Engine::update(double time) {
+void Engine::update(double dt) {
 
-	phy->gravity(time);
-	phy->update(time);
-	if(collisions) phy->resolveCollisions(time, renderer);
+	dt*= time_rate;
+	phy->update(dt);
+	if(collisions) phy->resolveCollisions(dt, renderer);
 	if(circleBounds) phy->circBounds(Vector(width/2,height/2), 
-					circleBoundRadius, time);
+					circleBoundRadius, dt);
+	phy->gravity(dt);
 	grid->clean();
 	grid->update();
 	energy = phy->Energy();
@@ -107,6 +108,7 @@ void Engine::settings(){
 	ImGui::Checkbox("Circle Bounds", &circleBounds);
 	ImGui::Checkbox("Collisions", &collisions);
 	ImGui::SliderFloat("Gravity",&phy->gravity_const, 0, 20);
+	ImGui::SliderFloat("Time Rate",&time_rate, 0, 2);
 	ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
 	ImGui::End();
 	ImGui::Render();

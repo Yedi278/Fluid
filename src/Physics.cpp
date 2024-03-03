@@ -61,35 +61,32 @@ void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
 
     for(int i=0; i<grid->density; i++){
         for(int j=0; j<grid->density; j++){
-            for(int k=0; k<grid->single_cell_size; k++){
-
-                int index_fixed = grid->cells[i][j][k];
+            for(auto index_fixed : grid->cells[i][j]){
                 if(index_fixed == -1) continue;
 
                 for(int l=i-1; l<i+1; l++){
                     for(int m=j-1; m<j+1; m++){
-                        for(int n=0; n<grid->single_cell_size; n++){
-                            
-
-                            if(l<0 || m<0 || l>grid->single_cell_size 
-                                || m>grid->single_cell_size) continue;
-
-                            int index_changing = grid->cells[l][m][n];
-
+                        if(l<0 || m<0 || l>grid->single_cell_size 
+                               || m>grid->single_cell_size) continue;
+                        
+                        for(auto index_changing : grid->cells[l][m]){
                             if(index_changing == -1 || index_changing == index_fixed) continue;
+                            
+                            Vector dis_centers = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
 
-                            Vector dc = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
-
-                            const float rSum = grid->objects[index_fixed].obj->radius + grid->objects[index_changing].obj->radius;
-                            float dp = rSum - dc.mod();
+                            const float rSum = grid->objects[index_fixed].obj->radius 
+                                             + grid->objects[index_changing].obj->radius;
+                            
+                            float dp = rSum - dis_centers.mod();
 
                             if( dp > 0 ){
                                 
-                                dc *= 0.5;
-                                
-                                grid->objects[index_changing].obj->pos -= dc;
-                                grid->objects[index_fixed].obj->pos += dc;
-                                // SDL_Log("%f, %f",grid->objects[index_changing].obj->vel.mod(),grid->objects[index_fixed].obj->vel.mod());
+                                // dis_centers *= 0.5;
+                                dis_centers.mod(dp*0.5);
+                                grid->objects[index_changing].obj->pos -= dis_centers;
+                                grid->objects[index_fixed].obj->pos += dis_centers;
+
+                                SDL_Log("%f, %f",grid->objects[index_changing].obj->vel.mod(),grid->objects[index_fixed].obj->vel.mod());
                                 
                             }
                         }

@@ -25,6 +25,7 @@ public:
 	Engine(const char* title,Uint16 width, Uint16 height);
 	~Engine();
 
+	float time_rate = 1;
 	bool pause = false;
 	bool circleBounds = true;
 	int circleBoundRadius = 300;
@@ -33,7 +34,7 @@ public:
 	
 	void init(bool fullscreen);
 	void handleEvents();
-	void update(double time);
+	void update(double dt);
 	void render();
 	void moveObjects(int mx, int my);
 	void renderBorders();
