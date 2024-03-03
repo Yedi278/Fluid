@@ -1,8 +1,5 @@
 #include "Physics.h"
 
-#define DAMPENING 1
-#define AIR_RESIST 0 //from 0 to 1
-
 Physics::~Physics()
 {
     if(this != nullptr){
@@ -34,7 +31,7 @@ void Physics::gravity(double t){
 
     for(auto node : grid->objects){
         if(node.obj != nullptr){
-            node.obj->acc += Vector(0,SDL_STANDARD_GRAVITY);
+            node.obj->acc += Vector(0.f,gravity_const);
         }
     }
 }
@@ -53,7 +50,7 @@ void Physics::circBounds(Vector center, float radius, float time){
                 node.obj->pos = center + d;
 
                 node.obj->vel += (node.obj->pos - oldpos)/time;
-                node.obj->vel *= DAMPENING;
+                node.obj->vel *= 1-dampening;
 
             }
         }
@@ -111,7 +108,7 @@ float Physics::Energy(){
         if(node.obj != nullptr){
 
             energy += 0.5* node.obj->m * pow(node.obj->vel.mod(),2);
-            energy += node.obj->m * SDL_STANDARD_GRAVITY * node.obj->pos.y;
+            energy += node.obj->m * gravity_const * node.obj->pos.y;
 
         }
     }

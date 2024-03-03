@@ -28,7 +28,7 @@ public:
 	bool pause = false;
 	bool circleBounds = true;
 	int circleBoundRadius = 300;
-
+	bool collisions = true;
 	float energy = 0;
 	
 	void init(bool fullscreen);
@@ -37,6 +37,7 @@ public:
 	void render();
 	void moveObjects(int mx, int my);
 	void renderBorders();
+	void settings();
 
 	bool isRunning() {
 		return running;

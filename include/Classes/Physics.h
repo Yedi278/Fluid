@@ -17,6 +17,11 @@ private:
     int y_bound_down = 400;
 
 public:
+
+    float gravity_const = (float)SDL_STANDARD_GRAVITY;
+    float air_resistance = 0;
+    float dampening = 0;
+    
     Physics(SDL_Window* window, Grid* grid);
     ~Physics();
 

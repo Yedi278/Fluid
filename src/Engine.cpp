@@ -46,7 +46,7 @@ void Engine::handleEvents() {
 
 	SDL_Event event;
 	SDL_PollEvent(&event);
-
+	ImGui_ImplSDL2_ProcessEvent(&event);
 	switch (event.type) {
 	case SDL_QUIT:
 		running = false;
@@ -80,8 +80,9 @@ void Engine::update(double time) {
 
 	phy->gravity(time);
 	phy->update(time);
-	phy->resolveCollisions(time, renderer);
-	phy->circBounds(Vector(width/2,height/2), circleBoundRadius, time);
+	if(collisions) phy->resolveCollisions(time, renderer);
+	if(circleBounds) phy->circBounds(Vector(width/2,height/2), 
+					circleBoundRadius, time);
 	grid->clean();
 	grid->update();
 	energy = phy->Energy();
@@ -96,22 +97,31 @@ void Engine::update(double time) {
 	}
 }
 
-void Engine::render() {
+void Engine::settings(){
 
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(window);
-	ImGui::NewFrame();
 
-	ImGui::Begin("Test");
-	ImGui::Text("Hello");
+	ImGui::NewFrame();
+	ImGui::Begin("Settings");
+	ImGui::Checkbox("Circle Bounds", &circleBounds);
+	ImGui::Checkbox("Collisions", &collisions);
+	ImGui::SliderFloat("Gravity",&phy->gravity_const, 0, 20);
+	ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
 	ImGui::End();
 	ImGui::Render();
+
+}
+
+void Engine::render() {
+
+	settings();	
 
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
 	grid->renderAll();
-	renderBorders();
+	if(circleBounds) renderBorders();
 
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
