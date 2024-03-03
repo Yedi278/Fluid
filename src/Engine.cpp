@@ -27,6 +27,14 @@ void Engine::init(bool fullscreen) {
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width, height, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io= ImGui::GetIO();
+		(void) io;
+
+		ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
+		ImGui_ImplSDLRenderer2_Init(renderer);
+
 		grid = new Grid(window,renderer);
 		phy = new Physics(window,grid);
 		
@@ -90,11 +98,22 @@ void Engine::update(double time) {
 
 void Engine::render() {
 
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame(window);
+	ImGui::NewFrame();
+
+	ImGui::Begin("Test");
+	ImGui::Text("Hello");
+	ImGui::End();
+	ImGui::Render();
+
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
 	grid->renderAll();
 	renderBorders();
+
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderPresent(renderer);
@@ -108,8 +127,13 @@ void Engine::renderBorders(){
 
 void Engine::clear() {
 
+	ImGui_ImplSDLRenderer2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+
 	SDL_Log("Engine Closed!\n");
 	SDL_Quit();
 	

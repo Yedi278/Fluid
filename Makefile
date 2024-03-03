@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=
 SRC= $(wildcard src/*.cpp) $(wildcard imgui/*.cpp)
 
-INCLUDE = -Iinclude -IC:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\include 
+INCLUDE = -I include\Classes -I include\imgui -I C:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\include 
 LIB = -LC:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\lib -Llib
 
 lib = -lmingw32 -lSDL2main -lSDL2
