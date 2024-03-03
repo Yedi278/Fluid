@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL2/SDL.h>
-#undef main
 #include "Physics.h"
 
 class Engine

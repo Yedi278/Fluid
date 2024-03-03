@@ -1,3 +1,0 @@
-g++ main.cpp GameObject.cpp Draw.cpp Physics.cpp Vector2.cpp Engine.cpp Grid.cpp -lSDL2main -lSDL2 -o Fluid
-
-./Fluid

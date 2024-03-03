@@ -1,3 +1,6 @@
+#include "imgui"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_sdlrenderer2.h"
 #include "Engine.h"
 
 #define FPS_LIMIT 60
@@ -7,7 +10,7 @@ Engine* eng = nullptr;
 
 const float dt = 0.001;
 
-int main() {
+int main(int argc, char* argv[]) {
 	
 	eng = new Engine("Fluid Simulation", 700,700);
 	eng->init(false);
