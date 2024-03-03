@@ -10,17 +10,6 @@ Physics::~Physics()
     }
 }
 
-double calcolaAngolo(double x1, double y1, double x2, double y2){
-   
-    const double deltaX = x2 - x1;
-    const double deltaY = y2 - y1;
-
-    double angoloRad = atan2(-deltaY, deltaX);
-    // double angoloGrad = angoloRad * 360 / (2*M_PI);
-
-    return angoloRad;
-}
-
 Physics::Physics(SDL_Window* window, Grid* grid)
 {
     this->grid = grid;
@@ -28,15 +17,16 @@ Physics::Physics(SDL_Window* window, Grid* grid)
     SDL_GetWindowSize(window,&this->x_bound_down,&this->y_bound_down);
 }
 
-void Physics::update(double t){
+void Physics::update(double dt){
 
     for(auto node : grid->objects){
 
         if(node.obj == nullptr) continue;
         
-        node.obj->vel += node.obj->acc *t;
-        node.obj->pos += node.obj->vel * t;
+        node.obj->vel += node.obj->acc * dt;
+        node.obj->pos += node.obj->vel * dt;
         node.obj->acc = Vector(0,0);
+
     }
 }
 
@@ -70,7 +60,7 @@ void Physics::circBounds(Vector center, float radius, float time){
     }
 }
 
-void Physics::resolveCollisions(double time){
+void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
 
     for(int i=0; i<grid->density; i++){
         for(int j=0; j<grid->density; j++){
@@ -91,16 +81,17 @@ void Physics::resolveCollisions(double time){
 
                             if(index_changing == -1 || index_changing == index_fixed) continue;
 
-                            Vector dis = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
+                            Vector dc = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
 
                             const float rSum = grid->objects[index_fixed].obj->radius + grid->objects[index_changing].obj->radius;
-                            float dp = abs(rSum - dis.mod());
+                            float dp = rSum - dc.mod();
 
-                            if( rSum - dis.mod() > 0 ){
+                            if( dp > 0 ){
                                 
-                                dis.mod(dp*0.5);
-                                grid->objects[index_changing].obj->pos -= dis;
-                                grid->objects[index_fixed].obj->pos += dis;
+                                dc *= 0.5;
+                                
+                                grid->objects[index_changing].obj->pos -= dc;
+                                grid->objects[index_fixed].obj->pos += dc;
                                 // SDL_Log("%f, %f",grid->objects[index_changing].obj->vel.mod(),grid->objects[index_fixed].obj->vel.mod());
                                 
                             }

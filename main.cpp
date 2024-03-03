@@ -5,6 +5,8 @@
 
 Engine* eng = nullptr;
 
+const float dt = 0.001;
+
 int main() {
 	
 	eng = new Engine("Fluid Simulation", 700,700);
@@ -23,11 +25,11 @@ int main() {
 		delta = a - b;
 
 		eng->handleEvents();
+		
 		if (delta > (double)1000 / FPS_LIMIT & !eng->pause){
 			// SDL_Log("FPS: %d",1000/delta);
 			eng->update((double)TIME_RATE*10/FPS_LIMIT);
 			b = a;
-
 		}
 		
 		eng->render();

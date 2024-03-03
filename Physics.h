@@ -21,9 +21,8 @@ public:
     ~Physics();
 
     void update(double t);
-    void boundariesCollisions();
     void circBounds(Vector center, float radius, float time);
-    void resolveCollisions(double time);
+    void resolveCollisions(double time,SDL_Renderer* rnd);
     void gravity(double t);
     float Energy();
 };

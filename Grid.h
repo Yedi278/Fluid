@@ -2,7 +2,6 @@
 #include "SDL2/SDL.h"
 #include "GameObject.h"
 #include "Draw.hpp"
-#include <vector>
 
 #define DENSITY 30
 #define SINGLE_CELL_SIZE 10

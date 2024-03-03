@@ -72,16 +72,18 @@ void Engine::update(double time) {
 
 	phy->gravity(time);
 	phy->update(time);
-	// phy->resolveCollisions(time);
+	phy->resolveCollisions(time, renderer);
 	phy->circBounds(Vector(width/2,height/2), circleBoundRadius, time);
 	grid->clean();
 	grid->update();
 	energy = phy->Energy();
 
-	printf("Energy: %f\n",energy);
+	// printf("Energy: %f\n",energy);
 
 	while(counter < 1){
 		grid->put(150,300);
+		grid->put(200,300);
+
 		counter ++;
 	}
 }
