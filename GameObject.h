@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "Vector2.h"
+#include "Vector.h"
 
 #define BASIC_TYPE 001
 #define SQUARE_TYPE 002

@@ -1,6 +1,6 @@
 #pragma once
 #include "SDL2/SDL.h"
-#include "Vector2.h"
+#include "Vector.h"
 
 int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius);
 int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius);
