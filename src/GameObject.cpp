@@ -12,6 +12,10 @@ GameObject::GameObject(float x,float y,float vx,float vy) {
 	this->pos.y = y;
 	this->vel.x = vx;
 	this->vel.y = vy;
+
+	this->color.r = rand()%255;
+	this->color.g = rand()%255;
+	this->color.b = rand()%255;
 }
 
 GameObject::GameObject(float x,float y,float vx,float vy,float ax,float ay) {

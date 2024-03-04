@@ -9,14 +9,14 @@ const float dt = 0.001;
 
 int main(int argc, char* argv[]) {
 	
-	eng = new Engine("Fluid Simulation", 700,700);
+	eng = new Engine("Fluid Simulation", 800,700);
 	eng->init(false);
 
 	Uint32 a = SDL_GetTicks();
 	Uint32 b = SDL_GetTicks();
 
 	Uint16 delta = 0;
-
+	double dt = 0.;
 	while (eng->isRunning()) {
 
 		a = SDL_GetTicks();
@@ -26,9 +26,16 @@ int main(int argc, char* argv[]) {
 		
 		if (delta > (double)1000 / FPS_LIMIT && !eng->pause){
 			// SDL_Log("FPS: %d",1000/delta);
-			eng->update((double)TIME_RATE*10/FPS_LIMIT);
+			
+			while(dt < (double)TIME_RATE*10/FPS_LIMIT){
+				
+				eng->update(0.01);
+				dt += 0.01;
+
+			}
 			b = a;
 		}
+		dt = 0.;
 		
 		eng->render();
 

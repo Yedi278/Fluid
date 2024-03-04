@@ -1,4 +1,5 @@
 #include "Vector.h"
+#define PI 3.141592
 
 Vector::Vector(float x, float y) {
 
@@ -8,11 +9,10 @@ Vector::Vector(float x, float y) {
 }
 
 float Vector::angle(){
-
-    double angoloRad = -atan2(-this->y, this->x);
-    // double angoloGrad = angoloRad * 360 / (2*M_PI);
-
-    return angoloRad;
+	if(y<0){
+		return 2* PI + atan2(this->y,this->x);
+	}
+	return atan2(this->y,this->x);
 }
 
 void Vector::angle(float a){

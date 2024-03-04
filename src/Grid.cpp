@@ -68,13 +68,15 @@ void Grid::renderAll(){
     for(auto& node : objects){
         if(node.obj != nullptr){
 
-        SDL_SetRenderDrawColor(rnd, 255,0,0,255);
+        SDL_SetRenderDrawColor(rnd, node.obj->color.r, node.obj->color.g, node.obj->color.b ,255);
         SDL_RenderFillCircle(rnd, node.obj->pos.x,node.obj->pos.y,node.obj->radius);
         SDL_SetRenderDrawColor(rnd, 0,0,255,255);
-        SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->vel);
+        if(view_vel) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->vel);
         SDL_SetRenderDrawColor(rnd, 0,255,0,255);
-        SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->acc);
-        SDL_RenderDrawLine(rnd, node.obj->pos.x, node.obj->pos.y, w/2,h/2);
+        if(view_acc) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->acc);
+        if(view_pos) SDL_RenderDrawLine(rnd, node.obj->pos.x, node.obj->pos.y, w/2,h/2);
+
+        if(node.obj->other && view_other) SDL_RenderDrawArrow(rnd, node.obj->pos, *node.obj->other);
 
         }
     }

@@ -78,24 +78,16 @@ void Engine::handleEvents() {
 
 void Engine::update(double dt) {
 
-	dt*= time_rate;
-	phy->update(dt);
+	dt *= time_rate;
 	if(collisions) phy->resolveCollisions(dt, renderer);
-	if(circleBounds) phy->circBounds(Vector(width/2,height/2), 
-					circleBoundRadius, dt);
+	if(circleBounds) phy->circBounds(Vector(width/2,height/2), circleBoundRadius, dt);
+	if(rectBounds) phy->rectBounds(Vector(width/2,height/2), (float)h, (float)w, dt);
+	phy->update(dt);
 	phy->gravity(dt);
 	grid->clean();
 	grid->update();
 	energy = phy->Energy();
 
-	// printf("Energy: %f\n",energy);
-
-	while(counter < 1){
-		grid->put(150,300);
-		grid->put(200,300);
-
-		counter ++;
-	}
 }
 
 void Engine::settings(){
@@ -105,15 +97,61 @@ void Engine::settings(){
 
 	ImGui::NewFrame();
 	ImGui::Begin("Settings");
+<<<<<<< HEAD
 	if(ImGui::Button("Clear Objects")){
 		grid->remove_all();
 	}
 	ImGui::Checkbox("Circle Bounds", &circleBounds);
+=======
+
+>>>>>>> 78f94c5 (imGui Menu)
 	ImGui::Checkbox("Collisions", &collisions);
-	ImGui::SliderFloat("Gravity",&phy->gravity_const, 0, 20);
-	ImGui::SliderFloat("Time Rate",&time_rate, 0, 2);
-	ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
 	ImGui::End();
+
+	if (ImGui::BeginMainMenuBar()) {
+
+		if(ImGui::Button("Add Object")) grid->put(200,200);
+		if(ImGui::Button("Clear Ojects"));
+    	
+		if(ImGui::BeginMenu("View")){
+			
+			ImGui::Checkbox("positions", &grid->view_pos);
+			ImGui::Checkbox("velocity", &grid->view_vel);
+			ImGui::Checkbox("acceleration", &grid->view_acc);
+			ImGui::Checkbox("other", &grid->view_other);
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Bounds")) {
+
+			ImGui::Checkbox("Circle Bounds", &circleBounds);
+			ImGui::Checkbox("Rect Bounds", &rectBounds);
+			ImGui::SliderInt("width", &w, 0, width);
+			ImGui::SliderInt("height", &h, 0, height);
+
+			ImGui::EndMenu();
+        }
+		if (ImGui::BeginMenu("Gravity")) {
+
+			ImGui::SliderFloat("Gravity",&phy->gravity_const, 0, 20);
+			ImGui::SliderAngle("Gravity Angle", &phy->grav_angle, 0, 360);
+			
+			ImGui::EndMenu();
+		}
+		if(ImGui::BeginMenu("Other")){
+
+			ImGui::SliderFloat("Time Rate",&time_rate, 0, 2);
+			ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::Text("Kinetic Energy = %f",energy);
+
+        ImGui::EndMainMenuBar();
+	}
+
 	ImGui::Render();
 
 }
@@ -126,7 +164,7 @@ void Engine::render() {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
 	grid->renderAll();
-	if(circleBounds) renderBorders();
+	renderBorders();
 
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
@@ -136,8 +174,16 @@ void Engine::render() {
 
 void Engine::renderBorders(){
 	
-	SDL_RenderDrawCircle(renderer,width/2,height/2,circleBoundRadius);
+	if(circleBounds) SDL_RenderDrawCircle(renderer,width/2,height/2,circleBoundRadius);
+	if(rectBounds){
 
+		SDL_Rect rect;
+		rect.x = width/2 - w/2;
+		rect.y = height/2 - h/2;
+		rect.w = w;
+		rect.h = h;
+		SDL_RenderDrawRect(renderer, &rect);
+	}
 }
 
 void Engine::clear() {

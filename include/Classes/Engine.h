@@ -27,8 +27,13 @@ public:
 
 	float time_rate = 1;
 	bool pause = false;
-	bool circleBounds = true;
+
+	bool circleBounds = false;
 	int circleBoundRadius = 300;
+
+	bool rectBounds = true;
+	int w = 700, h = 600;
+
 	bool collisions = true;
 	float energy = 0;
 	

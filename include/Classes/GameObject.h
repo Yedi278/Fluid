@@ -6,6 +6,12 @@
 #define SQUARE_TYPE 002
 #define CIRCLE_TYPE 003
 
+struct Color{
+	int r = 255;
+	int g = 255;
+	int b = 255;
+};
+
 class GameObject
 {
 private:
@@ -17,10 +23,12 @@ public:
 	Vector pos = Vector(0,0);
 	Vector vel = Vector(0,0);
 	Vector acc = Vector(0,0);
-	
+	Vector* other = nullptr;
 
 	float m = 1;  //mass
-	float radius = 20;
+	float radius = 30;
+
+	Color color;
 
 	GameObject(Vector vect);
 	GameObject(Vector vect, float radius);

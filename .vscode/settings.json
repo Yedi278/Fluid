@@ -1,3 +1,7 @@
 {
-    "cmake.sourceDirectory": "/home/peppo/Documents/Fluid"
+    "cmake.sourceDirectory": "/home/peppo/Documents/Fluid",
+    "files.associations": {
+        "*.cpp": "cpp",
+        "cmath": "cpp"
+    }
 }

@@ -25,7 +25,12 @@ private:
 
 public:
 
-    const int density = 10;
+    bool view_pos = true;
+	bool view_vel = true;
+	bool view_acc = true;
+    bool view_other = true;
+
+    const int density = 1;
     const int size = 1000;
     const int single_cell_size = 100;
 
