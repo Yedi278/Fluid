@@ -10,20 +10,11 @@ LIB = -Llib
 lib = -lSDL2main -lSDL2
 BUILD_DIR = build
 
-<<<<<<< HEAD
 windows: 
-	$(CC) $(CFLAGS)	$(SRC) $(INCLUDE)$(SDL_LIB) $(LIB) $(lib) -lmingw32 -o $(BUILD_DIR)/Build
+	$(CC) $(CFLAGS)	$(SRC) $(INCLUDE) $(SDL_LIB) $(LIB) $(lib) -lmingw32 -o $(BUILD_DIR)/Build
 	./build/Build.exe
-=======
-default:	windows run
-
-debug: windowsDeb runDeb
->>>>>>> 78f94c5 (imGui Menu)
 
 compile:
-	$(CC) $(CFLAGS)	$(SRC) $(INCLUDE) $(LIB) $(lib) -o $(BUILD_DIR)/Build
-
-windows: 
 	$(CC) $(CFLAGS)	$(SRC) $(INCLUDE) $(LIB) $(lib) -o $(BUILD_DIR)/Build
 
 windowsDeb:
