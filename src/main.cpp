@@ -14,8 +14,6 @@ int main(int argc, char* argv[]) {
 
 	Uint32 a = SDL_GetTicks();
 	Uint32 b = SDL_GetTicks();
-	Uint32 c = SDL_GetTicks();
-
 
 	Uint16 delta = 0;
 
@@ -26,7 +24,7 @@ int main(int argc, char* argv[]) {
 
 		eng->handleEvents();
 		
-		if (delta > (double)1000 / FPS_LIMIT & !eng->pause){
+		if (delta > (double)1000 / FPS_LIMIT && !eng->pause){
 			// SDL_Log("FPS: %d",1000/delta);
 			eng->update((double)TIME_RATE*10/FPS_LIMIT);
 			b = a;

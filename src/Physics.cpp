@@ -2,9 +2,7 @@
 
 Physics::~Physics()
 {
-    if(this != nullptr){
-        delete this;
-    }
+    delete this;
 }
 
 Physics::Physics(SDL_Window* window, Grid* grid)
