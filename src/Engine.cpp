@@ -96,15 +96,9 @@ void Engine::settings(){
 	ImGui_ImplSDL2_NewFrame(window);
 
 	ImGui::NewFrame();
-	ImGui::Begin("Settings");
-<<<<<<< HEAD
-	if(ImGui::Button("Clear Objects")){
-		grid->remove_all();
-	}
-	ImGui::Checkbox("Circle Bounds", &circleBounds);
-=======
 
->>>>>>> 78f94c5 (imGui Menu)
+	ImGui::Begin("Settings");
+	ImGui::Checkbox("Circle Bounds", &circleBounds);
 	ImGui::Checkbox("Collisions", &collisions);
 	ImGui::End();
 
