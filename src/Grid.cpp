@@ -114,3 +114,10 @@ void Grid::clean(){
         }
     }
 }
+
+void Grid::remove_all(){
+    for(auto node : objects){
+        delete node.obj;
+        node.obj = nullptr;
+    }
+}

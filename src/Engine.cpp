@@ -105,6 +105,9 @@ void Engine::settings(){
 
 	ImGui::NewFrame();
 	ImGui::Begin("Settings");
+	if(ImGui::Button("Clear Objects")){
+		grid->remove_all();
+	}
 	ImGui::Checkbox("Circle Bounds", &circleBounds);
 	ImGui::Checkbox("Collisions", &collisions);
 	ImGui::SliderFloat("Gravity",&phy->gravity_const, 0, 20);

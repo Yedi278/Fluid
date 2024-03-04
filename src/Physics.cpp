@@ -47,7 +47,8 @@ void Physics::circBounds(Vector center, float radius, float time){
                 d.mod(radius - node.obj->radius);
                 node.obj->pos = center + d;
 
-                node.obj->vel += (node.obj->pos - oldpos)/time;
+                // node.obj->vel += (node.obj->pos - oldpos)/time;
+                node.obj->vel.x *= -1;
                 node.obj->vel *= 1-dampening;
 
             }
