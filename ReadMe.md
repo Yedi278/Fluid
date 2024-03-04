@@ -7,5 +7,5 @@ required libraries:
 >
 >[Imgui (master branch)](https://github.com/ocornut/imgui)
 
-[Collision detection using Euler's implicit method](https://graphics.stanford.edu/courses/cs448b-00-winter/papers/phys_model.pdf)
+[Differential Equation solutions using Euler's implicit/explicit method](https://graphics.stanford.edu/courses/cs448b-00-winter/papers/phys_model.pdf)
 
