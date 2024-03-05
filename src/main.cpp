@@ -7,7 +7,7 @@ Engine* eng = nullptr;
 
 const float dt = 0.001;
 
-int main(int argc, char** argv) {
+int main(int argv, const char** args) {
 	
 	eng = new Engine("Fluid Simulation", 800,700);
 	eng->init(false);
