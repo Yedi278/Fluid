@@ -1,26 +1,26 @@
 CC = g++
-CFLAGS = -Wall 
-SRC = $(wildcard src/*.cpp) $(wildcard imgui/*.cpp)
+CFLAGS = -Wall
 
-INCLUDE = -Iinclude/Classes -Iinclude/imgui 
-SDL_LIB= -I C:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\include -LC:\\Libraries\\SDL2-2.30.0-MNGW\\i686-w64-mingw32\\lib
-LIB = -Llib
+SRC = $(wildcard src/*.cpp) $(wildcard lib/imgui/lib/*.cpp)
 
+INCLUDE = -Iinclude/Classes
+LIB= -I lib\SDL2\i686-w64-mingw32\include -L lib\SDL2\i686-w64-mingw32\lib -I lib\imgui\include -L lib\imgui\lib
 
 lib = -lSDL2main -lSDL2
+
 BUILD_DIR = build
 
+default: windows run
+
+debug: windowsDeb runDeb
+
 windows: 
-	$(CC) $(CFLAGS) $(SRC) $(INCLUDE) $(SDL_LIB) $(LIB) $(lib) -lmingw32 -o $(BUILD_DIR)/Build
+	$(CC) $(CFLAGS) $(SRC) $(INCLUDE) $(LIB) $(lib) -lmingw32 -o $(BUILD_DIR)/Build
 
 windowsDeb:
-	$(CC) $(CFLAGS)	$(SRC) $(INCLUDE) $(LIB) $(lib) -o $(BUILD_DIR)/BuildDeb -g
-
-runDeb:
-	gdb ./build/BuildDeb
-
-linux:
-	$(CC) $(CFLAGS)	$(SRC) $(INCLUDE) $(LIB) $(lib) -o $(BUILD_DIR)/Build
+	$(CC) $(CFLAGS) $(SRC) $(INCLUDE) $(LIB) $(lib) -lmingw32 -o $(BUILD_DIR)/Build -g
 
 run:
 	./build/Build
+runDeb:
+	gdb ./build/BuildDeb

@@ -1,5 +1,5 @@
 #include "Engine.h"
-
+#undef main
 #define FPS_LIMIT 60
 #define TIME_RATE 1.3
 
@@ -7,7 +7,7 @@ Engine* eng = nullptr;
 
 const float dt = 0.001;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
 	
 	eng = new Engine("Fluid Simulation", 800,700);
 	eng->init(false);
