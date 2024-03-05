@@ -2,6 +2,7 @@
     "cmake.sourceDirectory": "/home/peppo/Documents/Fluid",
     "files.associations": {
         "*.cpp": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iostream": "cpp"
     }
 }

@@ -1,4 +1,4 @@
-#include "Grid.h"
+#include "Grid.hpp"
 #include <iostream>
 
 Grid::~Grid()
@@ -66,44 +66,20 @@ void Grid::update(){
 void Grid::renderAll(){
 
     for(auto& node : objects){
-        if(node.obj != nullptr){
+        if(node.obj){
 
         SDL_SetRenderDrawColor(rnd, node.obj->color.r, node.obj->color.g, node.obj->color.b ,255);
         SDL_RenderFillCircle(rnd, node.obj->pos.x,node.obj->pos.y,node.obj->radius);
         SDL_SetRenderDrawColor(rnd, 0,0,255,255);
-        if(view_vel) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->vel);
+        if(view_vel) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->vel , 5);
         SDL_SetRenderDrawColor(rnd, 0,255,0,255);
-        if(view_acc) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->acc);
+        if(view_acc) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->acc , 5);
         if(view_pos) SDL_RenderDrawLine(rnd, node.obj->pos.x, node.obj->pos.y, w/2,h/2);
-
-        if(node.obj->other && view_other) SDL_RenderDrawArrow(rnd, node.obj->pos, *node.obj->other);
+        SDL_SetRenderDrawColor(rnd, 255,255,255,255);
+        if(view_other) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->other , 1);
 
         }
     }
-}
-
-void Grid::printCells(){
-    int x=0,y=0,z=0;
-    printf("renderAll():\n");
-	for(auto& rows : cells){
-        for(auto& cell : rows){
-            for(auto& index : cell){
-                if(index != -1) printf("row: %d, col: %d, cell: %d - id: %d\n",x,y,z,index);
-                z++;
-            }
-            y++;z=0;
-        }
-        x++;y=0;z=0;
-    }
-}
-
-void Grid::printObjs(){
-    for(auto node : objects){
-        if(node.obj != nullptr){
-            printf( "%d - x: %f y: %f \n", node.id, node.obj->pos.x, node.obj->pos.y);
-        }
-    }
-    std::cout << "\n\n";
 }
 
 void Grid::clean(){

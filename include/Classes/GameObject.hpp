@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "Vector.h"
+#include "Vector.hpp"
 
 #define BASIC_TYPE 001
 #define SQUARE_TYPE 002
@@ -23,10 +23,10 @@ public:
 	Vector pos = Vector(0,0);
 	Vector vel = Vector(0,0);
 	Vector acc = Vector(0,0);
-	Vector* other = nullptr;
+	Vector other = Vector(0,0);;
 
 	float m = 1;  //mass
-	float radius = 30;
+	float radius = 70;
 
 	Color color;
 

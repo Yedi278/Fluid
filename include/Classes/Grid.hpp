@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "GameObject.hpp"
 #include "Draw.hpp"
 
 #define DENSITY 30
@@ -24,9 +24,9 @@ private:
 
 public:
 
-    bool view_pos = true;
+    bool view_pos = false;
 	bool view_vel = true;
-	bool view_acc = true;
+	bool view_acc = false;
     bool view_other = true;
 
     const int density = 1;
@@ -46,7 +46,5 @@ public:
     void remove_all();
     void update();
     void renderAll();
-    void printCells();
-    void printObjs();
     void clean();
 };

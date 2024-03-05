@@ -1,5 +1,5 @@
 #pragma once
-#include "Grid.h"
+#include "Grid.hpp"
 #include "math.h"
 
 class Physics

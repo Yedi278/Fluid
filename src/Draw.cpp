@@ -1,8 +1,7 @@
 #include "Draw.hpp"
 
-void SDL_RenderDrawArrow(SDL_Renderer* renderer, Vector center, Vector v){
+void SDL_RenderDrawArrow(SDL_Renderer* renderer, Vector center, Vector v, float alpha){
 
-    const float alpha = 5;
     Vector sum = (v*alpha)+center;
 
     SDL_RenderDrawLine(renderer, center.x, center.y, sum.x, sum.y);

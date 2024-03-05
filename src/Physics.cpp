@@ -1,4 +1,4 @@
-#include "Physics.h"
+#include "Physics.hpp"
 
 Physics::~Physics()
 {
@@ -11,7 +11,6 @@ Physics::Physics(SDL_Window* window, Grid* grid)
     this->window = window;
     SDL_GetWindowSize(window,&this->height,&this->width);
 }
-
 
 void Physics::update(double dt){
 
@@ -123,14 +122,15 @@ void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
                             
                             float dp = rSum - dis_centers.mod();
 
-                            grid->objects[index_fixed].obj->other = &dis_centers;
+                            
+                            grid->objects[index_fixed].obj->other = dis_centers;
                             if( dp > 0 ){
                                 
                                 dis_centers.mod(dp*0.5f);
-                                grid->objects[index_changing].obj->pos += dis_centers;
-                                // grid->objects[index_changing].obj->vel += dis_centers*time*0.98;
+                                // grid->objects[index_changing].obj->pos += dis_centers;
+                                // // grid->objects[index_changing].obj->vel += dis_centers*time*0.98;
 
-                                grid->objects[index_fixed].obj->pos -= dis_centers;
+                                // grid->objects[index_fixed].obj->pos -= dis_centers;
                                 // grid->objects[index_fixed].obj->vel -= dis_centers*time*0.98;
 
                                 // grid->objects[index_changing].obj->vel *= 0.99;
