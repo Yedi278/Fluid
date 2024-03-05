@@ -12,14 +12,16 @@ Physics::Physics(SDL_Window* window, Grid* grid)
     SDL_GetWindowSize(window,&this->height,&this->width);
 }
 
+
 void Physics::update(double dt){
 
     for(auto node : grid->objects){
-
         if(!node.obj) continue;
         
-        node.obj->vel += node.obj->acc * dt;
-        node.obj->pos += node.obj->vel * dt;
+        Vector oldpos = node.obj->pos;
+
+        node.obj->pos += node.obj->vel + node.obj->acc * dt* dt;
+        node.obj->vel = node.obj->pos - oldpos;
         node.obj->acc = Vector(0,0);
 
     }
@@ -46,25 +48,32 @@ void Physics::rectBounds(Vector center, float h, float w, float dt){
             if(dist.x - w/2 + radius > 0){
                 dist.x = w/2 - radius;
                 node.obj->pos = center + dist;
-                node.obj->vel.x *= -1+rectdamp;
+                node.obj->vel.x *= -1;
+                node.obj->vel *= 1-dampening;
+
             }
             if(dist.x + w/2 - radius < 0){
                 dist.x = -w/2 + radius;
                 node.obj->pos = center + dist;
-                node.obj->vel.x *= -1+rectdamp;
+                node.obj->vel.x *= -1;
+                node.obj->vel *= 1-dampening;
+
             }
 
             if(dist.y - h/2 + radius > 0){
                 dist.y = h/2 - radius;
                 node.obj->pos = center + dist;
-                node.obj->vel.y *= -1+rectdamp;
+                node.obj->vel.y *= -1;
+                node.obj->vel *= 1-dampening;
+
             }
             if(dist.y + h/2 - radius < 0){
                 dist.y = -h/2 + radius;
                 node.obj->pos = center + dist;
-                node.obj->vel.y *= -1+rectdamp;
-            }
+                node.obj->vel.y *= -1;
+                node.obj->vel *= 1-dampening;
 
+            }
         }
     }
 }
@@ -74,7 +83,7 @@ void Physics::circBounds(Vector center, float radius, float time){
     for(auto node : grid->objects){
         if(node.obj){
 
-            const Vector oldpos = node.obj->pos;
+            // const Vector oldpos = node.obj->pos;
             Vector d = node.obj->pos - center;
 
             if((d.mod()+node.obj->radius) > radius){
@@ -141,10 +150,10 @@ float Physics::Energy(){
     float energy = 0;
 
     for(auto node : grid->objects){
-        if(node.obj != nullptr){
+        if(node.obj){
 
-            energy += 0.5* node.obj->m * pow(node.obj->vel.mod(),2);
-            energy += node.obj->m * gravity_const * node.obj->pos.y;
+            energy += 0.5* node.obj->m * pow(node.obj->vel.mod(),2)
+                         + node.obj->m * gravity_const * node.obj->pos.y;
 
         }
     }

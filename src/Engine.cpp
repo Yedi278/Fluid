@@ -141,7 +141,7 @@ void Engine::settings(){
 			ImGui::EndMenu();
 		}
 
-		ImGui::Text("Kinetic Energy = %f",energy);
+		ImGui::Text("Energy = %f",energy);
 
         ImGui::EndMainMenuBar();
 	}
