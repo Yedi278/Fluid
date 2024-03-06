@@ -13,7 +13,6 @@ lib = -lSDL2main -lSDL2
 BUILD_DIR = build
 
 default: windows run
-deflinux: linux run
 
 debug: windowsDeb runDeb
 
@@ -25,6 +24,7 @@ windowsDeb:
 
 linux:
 	$(CC) $(CFLAGS) $(SRC) $(INCLUDE) $(LIB_linux) $(lib) -o $(BUILD_DIR)/Build
+	run
 
 run:
 	./build/Build
