@@ -15,7 +15,7 @@ private:
 
 public:
 
-    float gravity_const = (float)SDL_STANDARD_GRAVITY;
+    float gravity_const = (float)0.98;
     float grav_angle = M_PI/2;
     float air_resistance = 0;
     float dampening = 0;

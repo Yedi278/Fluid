@@ -17,7 +17,7 @@ void Physics::Euler_ODE(double dt){
     for(auto node : grid->objects){
         if(!node.obj) continue;
         
-        Vector oldpos = node.obj->pos;
+        // Vector oldpos = node.obj->pos;
 
         node.obj->pos += node.obj->vel*dt + node.obj->acc * 0.5  * dt*dt;
         node.obj->vel += node.obj->acc*dt;
@@ -27,23 +27,49 @@ void Physics::Euler_ODE(double dt){
     }
 }
 
-void Physics::Runge_Kutta(double dt){
+Vector da_dt(int val,Vector pos, Vector vel, Vector acc, double dt){
 
+    switch (val)
+    {
+        case 1:
+            return vel;
 
-
-    for(auto node : grid->objects){
-        if(!node.obj) continue;
-        
-        
-
+        case 2:
+            return acc;
     }
+}
+
+void RK4(Vector& pos,Vector& vel,Vector& acc, double dt){
+
+        Vector k1 = da_dt(1, pos, vel, acc, 0);
+        Vector k2 = da_dt(1, pos+(k1*dt*0.5f), vel+(k1*dt*0.5f), acc+(k1*dt*0.5f),dt*0.5);
+        Vector k3 = da_dt(1, pos+(k2*dt*0.5f), vel+(k2*dt*0.5f), acc+(k2*dt*0.5f),dt*0.5);
+        Vector k4 = da_dt(1, pos+(k3*dt), vel+(k3*dt), acc+(k3*dt),dt);
+        pos += (k1 + k2*2 + k3*2 + k4) * dt/6 + acc*0.5*dt*dt;
+
+        Vector k11 = da_dt(2, pos, vel, acc, dt);
+        Vector k22 = da_dt(2, pos+(k11*dt*0.5f), vel+(k11*dt*0.5f), acc+(k11*dt*0.5f),dt*0.5);
+        Vector k33 = da_dt(2, pos+(k22*dt*0.5f), vel+(k22*dt*0.5f), acc+(k22*dt*0.5f),dt*0.5);
+        Vector k44 = da_dt(2, pos+(k33*dt), vel+(k33*dt), acc+(k33*dt),dt);
+        vel += (k11 + k22*2 + k33*2 + k44) * dt/6;
 
 }
 
+void Physics::Runge_Kutta(double dt){
+
+    for(auto node : grid->objects){
+        if(!node.obj) continue;
+
+        RK4(node.obj->pos,node.obj->vel,node.obj->acc,dt);
+
+        node.obj->acc = Vector(0,0);
+    }
+}
 
 void Physics::update(double dt){
 
-    Euler_ODE(dt);
+    // Euler_ODE(dt);
+    Runge_Kutta(dt);
 
 }
 
