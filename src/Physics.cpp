@@ -19,8 +19,8 @@ void Physics::Euler_ODE(double dt){
         
         Vector oldpos = node.obj->pos;
 
-        node.obj->vel += node.obj->acc*dt;
         node.obj->pos += node.obj->vel*dt + node.obj->acc * 0.5  * dt*dt;
+        node.obj->vel += node.obj->acc*dt;
 
         node.obj->acc = Vector(0,0);
 
@@ -47,7 +47,7 @@ void Physics::update(double dt){
 
 }
 
-void Physics::gravity(double t){
+void Physics::gravity(double dt){
 
     for(auto node : grid->objects){
         if(node.obj){
@@ -178,7 +178,6 @@ float Physics::Energy(){
 
             float kin = 0.5 * node.obj->m * node.obj->vel.mod()*node.obj->vel.mod();
             float pot = node.obj->m * gravity_const * node.obj->pos.y;
-            SDL_Log("%f, %f", kin, pot);
             energy += kin - pot;
         }
     }

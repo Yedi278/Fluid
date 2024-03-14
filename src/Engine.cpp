@@ -78,11 +78,10 @@ void Engine::handleEvents() {
 
 void Engine::update(double dt) {
 
-
-	dt *= frequency;
 	if(collisions) phy->resolveCollisions(dt, renderer);
 	if(circleBounds) phy->circBounds(Vector(width/2,height/2), circleBoundRadius, dt);
 	if(rectBounds) phy->rectBounds(Vector(width/2,height/2), (float)h, (float)w, dt);
+	
 	phy->update(dt);
 	phy->gravity(dt);
 	grid->clean();
@@ -136,8 +135,8 @@ void Engine::settings(){
 		}
 		if(ImGui::BeginMenu("Other")){
 
-			ImGui::SliderFloat("Frequency",&frequency, 1, 200);
-			ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
+			// ImGui::SliderFloat("Frequency",&frequency, 1, 200);
+			// ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
 
 			ImGui::EndMenu();
 		}
