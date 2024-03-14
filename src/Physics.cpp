@@ -12,18 +12,39 @@ Physics::Physics(SDL_Window* window, Grid* grid)
     SDL_GetWindowSize(window,&this->height,&this->width);
 }
 
-void Physics::update(double dt){
+void Physics::Euler_ODE(double dt){
 
     for(auto node : grid->objects){
         if(!node.obj) continue;
         
         Vector oldpos = node.obj->pos;
 
-        node.obj->pos += node.obj->vel + node.obj->acc * dt* dt;
-        node.obj->vel = node.obj->pos - oldpos;
+        node.obj->vel += node.obj->acc*dt;
+        node.obj->pos += node.obj->vel*dt + node.obj->acc * 0.5  * dt*dt;
+
         node.obj->acc = Vector(0,0);
 
     }
+}
+
+void Physics::Runge_Kutta(double dt){
+
+
+
+    for(auto node : grid->objects){
+        if(!node.obj) continue;
+        
+        
+
+    }
+
+}
+
+
+void Physics::update(double dt){
+
+    Euler_ODE(dt);
+
 }
 
 void Physics::gravity(double t){
@@ -122,15 +143,18 @@ void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
                             
                             float dp = rSum - dis_centers.mod();
 
-                            
-                            grid->objects[index_fixed].obj->other = dis_centers;
+                            grid->objects[index_fixed].obj->other = Vector(0,0);
+
                             if( dp > 0 ){
                                 
                                 dis_centers.mod(dp*0.5f);
-                                // grid->objects[index_changing].obj->pos += dis_centers;
+                                float angle = dis_centers.angle();
+                                dis_centers.angle(angle+3.1415);
+                                grid->objects[index_fixed].obj->other = dis_centers;
+                                grid->objects[index_changing].obj->pos += dis_centers;
                                 // // grid->objects[index_changing].obj->vel += dis_centers*time*0.98;
 
-                                // grid->objects[index_fixed].obj->pos -= dis_centers;
+                                // grid->objects[index_fixed].obj->pos += dis_centers;
                                 // grid->objects[index_fixed].obj->vel -= dis_centers*time*0.98;
 
                                 // grid->objects[index_changing].obj->vel *= 0.99;
@@ -152,9 +176,10 @@ float Physics::Energy(){
     for(auto node : grid->objects){
         if(node.obj){
 
-            energy += 0.5* node.obj->m * pow(node.obj->vel.mod(),2)
-                         + node.obj->m * gravity_const * node.obj->pos.y;
-
+            float kin = 0.5 * node.obj->m * node.obj->vel.mod()*node.obj->vel.mod();
+            float pot = node.obj->m * gravity_const * node.obj->pos.y;
+            SDL_Log("%f, %f", kin, pot);
+            energy += kin - pot;
         }
     }
     return energy;

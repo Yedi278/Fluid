@@ -1,11 +1,11 @@
 #include "Engine.hpp"
 #undef main
 #define FPS_LIMIT 60
-#define TIME_RATE 1.3
 
 Engine* eng = nullptr;
 
-const float dt = 0.001;
+int freq = 1000;
+double dt = 0;
 
 int main(int argv, const char** args) {
 	
@@ -16,7 +16,7 @@ int main(int argv, const char** args) {
 	Uint32 b = SDL_GetTicks();
 
 	Uint16 delta = 0;
-	double dt = 0.;
+
 	while (eng->isRunning()) {
 
 		a = SDL_GetTicks();
@@ -24,19 +24,23 @@ int main(int argv, const char** args) {
 
 		eng->handleEvents();
 		
-		if (delta > (double)1000 / FPS_LIMIT && !eng->pause){
-			// SDL_Log("FPS: %d",1000/delta);
+		// if (delta > (double)1000 / FPS_LIMIT && !eng->pause){
+		// 	// SDL_Log("FPS: %d",1000/delta);
 			
-			while(dt < (double)TIME_RATE*10/FPS_LIMIT){
-				
-				eng->update(0.01);
-				dt += 0.01;
+		// 	eng->update((double)delta/1000);
+		// 	b = a;
+		// }
 
-			}
-			b = a;
+		dt = 0;
+		const float inc = (1.f/60.f) / freq;
+		while(dt < 1.f/60.f){
+
+			eng->update(dt);
+			dt += inc;
+
+
 		}
-		dt = 0.;
-		
+
 		eng->render();
 
 	}

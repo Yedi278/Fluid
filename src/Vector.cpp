@@ -9,8 +9,9 @@ Vector::Vector(float x, float y) {
 }
 
 float Vector::angle(){
+	
 	if(y<0){
-		return 2* PI + atan2(this->y,this->x);
+		return 2 * PI + atan2(this->y,this->x);
 	}
 	return atan2(this->y,this->x);
 }

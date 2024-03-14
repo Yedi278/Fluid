@@ -24,7 +24,7 @@ windowsDeb:
 
 linux:
 	$(CC) $(CFLAGS) $(SRC) $(INCLUDE) $(LIB_linux) $(lib) -o $(BUILD_DIR)/Build
-	run
+	./build/Build
 
 run:
 	./build/Build

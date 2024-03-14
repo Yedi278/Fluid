@@ -24,6 +24,8 @@ public:
     Physics(SDL_Window* window, Grid* grid);
     ~Physics();
 
+    void Euler_ODE(double dt);
+    void Runge_Kutta(double dt);
     void update(double t);
     void circBounds(Vector center, float radius, float time);
     void rectBounds(Vector center, float height, float width, float);

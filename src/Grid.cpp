@@ -76,7 +76,8 @@ void Grid::renderAll(){
         if(view_acc) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->acc , 5);
         if(view_pos) SDL_RenderDrawLine(rnd, node.obj->pos.x, node.obj->pos.y, w/2,h/2);
         SDL_SetRenderDrawColor(rnd, 255,255,255,255);
-        if(view_other) SDL_RenderDrawArrow(rnd, node.obj->pos, node.obj->other , 1);
+        if(view_other) SDL_RenderDrawLine(rnd, node.obj->pos.x,node.obj->pos.y,
+                    node.obj->pos.x + node.obj->other.x , node.obj->pos.y + node.obj->other.y);
 
         }
     }

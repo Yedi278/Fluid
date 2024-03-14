@@ -24,7 +24,7 @@ public:
 	Engine(const char* title,Uint16 width, Uint16 height);
 	~Engine();
 
-	float time_rate = 1;
+	float frequency = 1;
 	bool pause = false;
 
 	bool circleBounds = false;
