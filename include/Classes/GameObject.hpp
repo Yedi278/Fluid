@@ -26,7 +26,7 @@ public:
 	Vector other = Vector(0,0);;
 
 	float m = 1;  //mass
-	float radius = 70;
+	float radius = 20;
 
 	Color color;
 
@@ -36,5 +36,4 @@ public:
 	GameObject(float x,float y,float vx,float vy,float ax,float ay);
 
 	~GameObject();
-	
 };

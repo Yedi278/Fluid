@@ -136,7 +136,7 @@ void Engine::settings(){
 		if(ImGui::BeginMenu("Other")){
 
 			// ImGui::SliderFloat("Frequency",&frequency, 1, 200);
-			// ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
+			ImGui::SliderFloat("Dampening Factor",&phy->dampening, 0, 1);
 
 			ImGui::EndMenu();
 		}
