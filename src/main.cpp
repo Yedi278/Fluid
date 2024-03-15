@@ -1,6 +1,6 @@
 #include "Engine.hpp"
 #undef main
-#define FPS_LIMIT 100.f
+#define FPS_LIMIT 200.f
 
 Engine* eng = nullptr;
 
@@ -27,7 +27,7 @@ int main(int argv, const char** args) {
 
 			
 			eng->handleEvents();
-			while(dt < 1.f/(double)FPS_LIMIT){
+			while(dt < 1.f/(double)FPS_LIMIT && !eng->pause){
 
 				eng->update(dt);
 				dt += inc;
@@ -35,7 +35,7 @@ int main(int argv, const char** args) {
 				eng->handleEvents();
 				eng->render();
 		}
-		SDL_Log("FPS: %f", 1000.f/(float)(SDL_GetTicks()-a));
+		// SDL_Log("FPS: %f", 1000.f/(float)(SDL_GetTicks()-a));
 	}
 
 	eng->clear();

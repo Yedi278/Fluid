@@ -63,10 +63,12 @@ void Grid::update(){
     }
 }
 
+
 void Grid::renderAll(){
 
     for(auto& node : objects){
         if(node.obj){
+        
 
         SDL_SetRenderDrawColor(rnd, node.obj->color.r, node.obj->color.g, node.obj->color.b ,255);
         SDL_RenderFillCircle(rnd, node.obj->pos.x,node.obj->pos.y,node.obj->radius);
