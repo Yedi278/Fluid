@@ -1,49 +1,46 @@
-#pragma once
-#include "GameObject.hpp"
+#include <vector>
 #include "Draw.hpp"
+#include "GameObject.hpp"
 
-#define DENSITY 30
-#define SINGLE_CELL_SIZE 10
-#define SIZE 1000
-
-struct Node{
-	int id = -1;
-	GameObject* obj = nullptr;
+struct Node
+{
+    int id = -1;
+    GameObject* obj = nullptr;
 };
+
 
 class Grid{
 
 private:
 
-    SDL_Window* window = nullptr;
-    SDL_Renderer* rnd = nullptr;
-    int w = 0;
-    int h = 0;
-    int w_cell;
-    int h_cell;
+    SDL_Renderer* rnd;
+    SDL_Window* wnd;
+
+    //window sizes
+    int h=0;
+    int w=0;
 
 public:
-
+    //ImGui visualising condition variables
+    bool view_vel = true;
+    bool view_acc = true;
     bool view_pos = false;
-	bool view_vel = true;
-	bool view_acc = false;
     bool view_other = true;
 
-    const int density = 1;
-    const int size = 1000;
-    const int single_cell_size = 100;
 
-    int cells[DENSITY][DENSITY][SINGLE_CELL_SIZE];
+    Uint16 density_per_cell = 100;
+    
+    //Objects Array
+    std::vector <GameObject*> objects;
+    //Grid of ojects indices
+    int** cells = nullptr;
 
-    Node objects[SIZE];
+    Grid(SDL_Renderer* rnd, SDL_Window* wnd);
     
-    Grid(SDL_Window* window, SDL_Renderer* rnd);
-    ~Grid();
-    
-    int put(int x, int y);
-    
-    void remove_all();
-    void update();
-    void renderAll();
+    void init();
+    void add(GameObject* obj);
+    void create(int x, int y);
+    void render();
     void clean();
+    void update();
 };

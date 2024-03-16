@@ -3,6 +3,7 @@
     "files.associations": {
         "*.cpp": "cpp",
         "cmath": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "vector": "cpp"
     }
 }

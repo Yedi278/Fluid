@@ -14,13 +14,14 @@ Physics::Physics(SDL_Window* window, Grid* grid)
 
 void Physics::Euler_ODE(double dt){
 
-    for(auto node : grid->objects){
-        if(!node.obj) continue;
-        
-        node.obj->pos += node.obj->vel*dt + node.obj->acc * 0.5  * dt*dt;
-        node.obj->vel += node.obj->acc*dt;
+    for(auto obj : grid->objects){
+        // if(!node.obj) continue;
+        if(!obj) continue;
 
-        node.obj->acc = Vector(0,0);
+        obj->pos += obj->vel*dt + obj->acc * 0.5  * dt*dt;
+        obj->vel += obj->acc*dt;
+
+        obj->acc = Vector(0,0);
 
     }
 }
@@ -57,12 +58,12 @@ void RK4(Vector& pos,Vector& vel,Vector& acc, double dt){
 
 void Physics::Runge_Kutta(double dt){
 
-    for(auto node : grid->objects){
-        if(!node.obj) continue;
+    for(auto obj : grid->objects){
+        if(!obj) continue;
 
-        RK4(node.obj->pos,node.obj->vel,node.obj->acc,dt);
+        RK4(obj->pos,obj->vel,obj->acc,dt);
 
-        node.obj->acc = Vector(0,0);
+        obj->acc = Vector(0,0);
     }
 }
 
@@ -75,49 +76,49 @@ void Physics::update(double dt){
 
 void Physics::gravity(double dt){
 
-    for(auto node : grid->objects){
-        if(node.obj){
-            node.obj->acc += Vector(0.f,gravity_const);
-            node.obj->acc.angle(grav_angle);
+    for(auto obj : grid->objects){
+        if(obj){
+            obj->acc += Vector(0.f,gravity_const);
+            obj->acc.angle(grav_angle);
         }
     }
 }
 
 void Physics::rectBounds(Vector center, float h, float w, float dt){
 
-    for(auto node : grid->objects){
-        if(node.obj){
+    for(auto obj : grid->objects){
+        if(obj){
 
-            Vector dist = node.obj->pos - center;
-            float radius = node.obj->radius;
+            Vector dist = obj->pos - center;
+            float radius = obj->radius;
 
             if(dist.x - w/2 + radius > 0){
                 dist.x = w/2 - radius;
-                node.obj->pos = center + dist;
-                node.obj->vel.x *= -1;
-                node.obj->vel *= 1-dampening;
+                obj->pos = center + dist;
+                obj->vel.x *= -1;
+                obj->vel *= 1-dampening;
 
             }
             if(dist.x + w/2 - radius < 0){
                 dist.x = -w/2 + radius;
-                node.obj->pos = center + dist;
-                node.obj->vel.x *= -1;
-                node.obj->vel *= 1-dampening;
+                obj->pos = center + dist;
+                obj->vel.x *= -1;
+                obj->vel *= 1-dampening;
 
             }
 
             if(dist.y - h/2 + radius > 0){
                 dist.y = h/2 - radius;
-                node.obj->pos = center + dist;
-                node.obj->vel.y *= -1;
-                node.obj->vel *= 1-dampening;
+                obj->pos = center + dist;
+                obj->vel.y *= -1;
+                obj->vel *= 1-dampening;
 
             }
             if(dist.y + h/2 - radius < 0){
                 dist.y = -h/2 + radius;
-                node.obj->pos = center + dist;
-                node.obj->vel.y *= -1;
-                node.obj->vel *= 1-dampening;
+                obj->pos = center + dist;
+                obj->vel.y *= -1;
+                obj->vel *= 1-dampening;
 
             }
         }
@@ -126,18 +127,18 @@ void Physics::rectBounds(Vector center, float h, float w, float dt){
 
 void Physics::circBounds(Vector center, float radius, float time){
     
-    for(auto node : grid->objects){
-        if(node.obj){
+    for(auto obj : grid->objects){
+        if(obj){
 
-            Vector d = node.obj->pos - center;
+            Vector d = obj->pos - center;
 
-            if((d.mod()+node.obj->radius) > radius){
+            if((d.mod()+obj->radius) > radius){
 
-                d.mod(radius - node.obj->radius);
-                node.obj->pos = center + d;
+                d.mod(radius - obj->radius);
+                obj->pos = center + d;
 
-                node.obj->vel.x *= -1;
-                node.obj->vel *= 1-dampening;
+                obj->vel.x *= -1;
+                obj->vel *= 1-dampening;
 
             }
         }
@@ -170,74 +171,70 @@ void collide(GameObject* m1, GameObject* m2){
     m2->vel = reflect(dis,m2->vel);
 }
 
-void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
 
-    for(int i=0; i<grid->density; i++){
-        for(int j=0; j<grid->density; j++){
-            for(auto index_fixed : grid->cells[i][j]){ if(index_fixed == -1 || !grid->objects[index_fixed].obj) continue;
+//     for(int i=0; i<grid->density; i++){
+//         for(int j=0; j<grid->density; j++){
+//             for(auto index_fixed : grid->cells[i][j]){ if(index_fixed == -1 || !grid->objects[index_fixed].obj) continue;
 
-                for(int l=i-1; l<i+1; l++){
-                    for(int m=j-1; m<j+1; m++){ if(l<0 || l>grid->single_cell_size || m<0 || m>grid->single_cell_size) continue;
+//                 for(int l=i-1; l<i+1; l++){
+//                     for(int m=j-1; m<j+1; m++){ if(l<0 || l>grid->single_cell_size || m<0 || m>grid->single_cell_size) continue;
                         
-                        for(auto index_changing : grid->cells[l][m]){
-                            if(index_changing == -1 || index_changing == index_fixed 
-                                                    || !grid->objects[index_changing].obj) continue;
+//                         for(auto index_changing : grid->cells[l][m]){
+//                             if(index_changing == -1 || index_changing == index_fixed 
+//                                                     || !grid->objects[index_changing].obj) continue;
                             
-                            Vector dis_centers = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
+//                             Vector dis_centers = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
 
-                            const float rSum = grid->objects[index_fixed].obj->radius 
-                                             + grid->objects[index_changing].obj->radius;
+//                             const float rSum = grid->objects[index_fixed].obj->radius 
+//                                              + grid->objects[index_changing].obj->radius;
                             
-                            float dp = rSum - dis_centers.mod();
+//                             float dp = rSum - dis_centers.mod();
 
-                            if( dp > 0 ){
+//                             if( dp > 0 ){
                                 
-                                collide(grid->objects[index_changing].obj,grid->objects[index_fixed].obj);
+//                                 collide(grid->objects[index_changing].obj,grid->objects[index_fixed].obj);
 
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
 float Physics::Energy(){
 
     float energy = 0;
 
-    for(auto node : grid->objects){
-        if(node.obj){
+    for(auto obj : grid->objects){
+        if(obj){
 
-            float kin = 0.5 * node.obj->m * node.obj->vel.mod()*node.obj->vel.mod();
-            float pot = node.obj->m * gravity_const * node.obj->pos.y;
+            float kin = 0.5 * obj->m * obj->vel.mod()*obj->vel.mod();
+            float pot = obj->m * gravity_const * obj->pos.y;
             energy += abs(kin - pot);
         }
     }
     return energy;
 }
 
-// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
-//     for(auto node : grid->objects){
-//         if(node.obj){
-// 
-//             for(auto node2 : grid->objects){
-//                 if(node2.obj){
-//                     if(node.obj == node2.obj) continue;
-// 
-//                     Vector dis = node2.obj->pos - node.obj->pos;
-// 
-//                     float Rs = node.obj->radius + node2.obj->radius;
-// 
-//                     if(Rs - dis.mod() > 0){
-//  
-//                         collide(node.obj,node2.obj);
-// 
-//                     }
-// 
-//                 }
-//             }
-//         }
-//     }
-// }
+void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+    for(auto obj : grid->objects){ if(obj){
+
+            for(auto obj2 : grid->objects){ if(obj2){ if(obj == obj2) continue;
+
+                    Vector dis = obj2->pos - obj->pos;
+
+                    float Rs = obj->radius + obj2->radius;
+
+                    if(Rs - dis.mod() > 0){
+ 
+                        collide(obj,obj2);
+
+                    }
+                }
+            }
+        }
+    }
+}

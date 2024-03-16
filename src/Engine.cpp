@@ -37,7 +37,7 @@ void Engine::init(bool fullscreen) {
 		ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
 		ImGui_ImplSDLRenderer2_Init(renderer);
 
-		grid = new Grid(window,renderer);
+		grid = new Grid(renderer,window);
 		phy = new Physics(window,grid);
 		
 		running = true;
@@ -86,8 +86,8 @@ void Engine::update(double dt) {
 	
 	phy->update(dt);
 	phy->gravity(dt);
-	grid->clean();
-	grid->update();
+	// grid->clean();
+	// grid->update();
 	energy = phy->Energy();
 
 }
@@ -106,7 +106,7 @@ void Engine::settings(){
 
 	if (ImGui::BeginMainMenuBar()) {
 
-		if(ImGui::Button("Add Object")) grid->put(200,200);
+		if(ImGui::Button("Add Object")) grid->create(200,200);
 		if(ImGui::Button("Clear Ojects"));
     	
 		if(ImGui::BeginMenu("View")){
@@ -159,7 +159,7 @@ void Engine::render() {
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-	grid->renderAll();
+	grid->render();
 	renderBorders();
 
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
@@ -198,15 +198,15 @@ void Engine::clear() {
 
 void Engine::moveObjects(int mx,int my){
 
-	const Vector mouse = Vector(mx,my);
-	for(auto node: grid->objects){
-		if(node.obj != nullptr){
+	// const Vector mouse = Vector(mx,my);
+	// for(auto node: grid->objects){
+	// 	if(node.obj != nullptr){
 
-			if((node.obj->pos - mouse).mod() < node.obj->radius){
-				node.obj->pos = mouse;
-				node.obj->vel = Vector(0,0);
-			}
+	// 		if((node.obj->pos - mouse).mod() < node.obj->radius){
+	// 			node.obj->pos = mouse;
+	// 			node.obj->vel = Vector(0,0);
+	// 		}
 
-		}
-	}
+	// 	}
+	// }
 }
