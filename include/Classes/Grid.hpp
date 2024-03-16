@@ -41,8 +41,7 @@ public:
     ~Grid();
     
     int put(int x, int y);
-    void remove();
-    void remove(int id);
+    
     void remove_all();
     void update();
     void renderAll();

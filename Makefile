@@ -30,3 +30,7 @@ run:
 	./build/Build
 runDeb:
 	gdb ./build/BuildDeb
+
+newclass:
+
+	echo $(name)

@@ -6,6 +6,8 @@ Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 	this->title = title;
 	this->width = width;
 	this->height = height;
+	this->h = height;
+	this->w = width;
 }
 
 Engine::~Engine() {
@@ -78,9 +80,9 @@ void Engine::handleEvents() {
 
 void Engine::update(double dt) {
 
-	if(collisions) phy->resolveCollisions(dt, renderer);
-	if(circleBounds) phy->circBounds(Vector(width/2,height/2), circleBoundRadius, dt);
 	if(rectBounds) phy->rectBounds(Vector(width/2,height/2), (float)h, (float)w, dt);
+	if(circleBounds) phy->circBounds(Vector(width/2,height/2), circleBoundRadius, dt);
+	if(collisions) phy->resolveCollisions(dt, renderer);
 	
 	phy->update(dt);
 	phy->gravity(dt);

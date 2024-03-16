@@ -17,8 +17,6 @@ void Physics::Euler_ODE(double dt){
     for(auto node : grid->objects){
         if(!node.obj) continue;
         
-        // Vector oldpos = node.obj->pos;
-
         node.obj->pos += node.obj->vel*dt + node.obj->acc * 0.5  * dt*dt;
         node.obj->vel += node.obj->acc*dt;
 
@@ -131,7 +129,6 @@ void Physics::circBounds(Vector center, float radius, float time){
     for(auto node : grid->objects){
         if(node.obj){
 
-            // const Vector oldpos = node.obj->pos;
             Vector d = node.obj->pos - center;
 
             if((d.mod()+node.obj->radius) > radius){
@@ -139,7 +136,6 @@ void Physics::circBounds(Vector center, float radius, float time){
                 d.mod(radius - node.obj->radius);
                 node.obj->pos = center + d;
 
-                // node.obj->vel += (node.obj->pos - oldpos)/time;
                 node.obj->vel.x *= -1;
                 node.obj->vel *= 1-dampening;
 
@@ -151,12 +147,12 @@ void Physics::circBounds(Vector center, float radius, float time){
 Vector reflect(Vector n, Vector v){
 
     Vector other = v;
-    other.angle(v.angle() - n.angle() + 3.1415/2.);
+    other.angle(v.angle() - n.angle() + 3.1415/2.); //trasformazione di coordinate (ruoto a 0)
 
-    other.y *= -1;
+    other.y *= -1;  //inverto il moto
 
     float angle = other.angle();
-    other.angle(angle + n.angle() - 3.1415/2.);
+    other.angle(angle + n.angle() - 3.1415/2.);     //ritorno alle coordinate originali
 
     return other;
 }
@@ -172,7 +168,6 @@ void collide(GameObject* m1, GameObject* m2){
 
     m1->vel = reflect(dis,m1->vel);
     m2->vel = reflect(dis,m2->vel);
-
 }
 
 void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
@@ -208,33 +203,6 @@ void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
     }
 }
 
-// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
-
-//     for(auto node : grid->objects){
-//         if(node.obj){
-
-//             for(auto node2 : grid->objects){
-//                 if(node2.obj){
-//                     if(node.obj == node2.obj) continue;
-
-//                     Vector dis = node2.obj->pos - node.obj->pos;
-
-//                     float Rs = node.obj->radius + node2.obj->radius;
-
-//                     if(Rs - dis.mod() > 0){
-                        
-//                         collide(node.obj,node2.obj);
-
-//                     }
-
-//                 }
-//             }
-//         }
-//     }
-// }
-
-
-
 float Physics::Energy(){
 
     float energy = 0;
@@ -244,8 +212,32 @@ float Physics::Energy(){
 
             float kin = 0.5 * node.obj->m * node.obj->vel.mod()*node.obj->vel.mod();
             float pot = node.obj->m * gravity_const * node.obj->pos.y;
-            energy += kin - pot;
+            energy += abs(kin - pot);
         }
     }
     return energy;
 }
+
+// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+//     for(auto node : grid->objects){
+//         if(node.obj){
+// 
+//             for(auto node2 : grid->objects){
+//                 if(node2.obj){
+//                     if(node.obj == node2.obj) continue;
+// 
+//                     Vector dis = node2.obj->pos - node.obj->pos;
+// 
+//                     float Rs = node.obj->radius + node2.obj->radius;
+// 
+//                     if(Rs - dis.mod() > 0){
+//  
+//                         collide(node.obj,node2.obj);
+// 
+//                     }
+// 
+//                 }
+//             }
+//         }
+//     }
+// }
