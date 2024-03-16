@@ -8,6 +8,7 @@ Engine::Engine(const char* title, Uint16 width, Uint16 height) {
 	this->height = height;
 	this->h = height;
 	this->w = width;
+
 }
 
 Engine::~Engine() {
@@ -40,6 +41,8 @@ void Engine::init(bool fullscreen) {
 		grid = new Grid(renderer,window);
 		phy = new Physics(window,grid);
 		
+		grid->init();
+		// grid->display();
 		running = true;
 	}
 }
@@ -86,8 +89,8 @@ void Engine::update(double dt) {
 	
 	phy->update(dt);
 	phy->gravity(dt);
-	// grid->clean();
-	// grid->update();
+	grid->clean();
+	grid->update();
 	energy = phy->Energy();
 
 }

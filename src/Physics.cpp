@@ -171,38 +171,36 @@ void collide(GameObject* m1, GameObject* m2){
     m2->vel = reflect(dis,m2->vel);
 }
 
-// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+    
+    int x,y;
+    float Rs;
 
-//     for(int i=0; i<grid->density; i++){
-//         for(int j=0; j<grid->density; j++){
-//             for(auto index_fixed : grid->cells[i][j]){ if(index_fixed == -1 || !grid->objects[index_fixed].obj) continue;
+    for(auto obj : grid->objects) if(obj){
 
-//                 for(int l=i-1; l<i+1; l++){
-//                     for(int m=j-1; m<j+1; m++){ if(l<0 || l>grid->single_cell_size || m<0 || m>grid->single_cell_size) continue;
+            x = grid->cellx(obj->pos.x);
+            y = grid->celly(obj->pos.y);
+
+            for(int i=x-1; i<=x+1; i++) for(int j=y-1; j<=y+1; j++){
+                if()
+                // printf("%d %d - %d  %d\n",x,y, i,j);
+                for(auto obj2 : grid->cells[i][j]) if(obj2){
+
+                    Vector dis = obj2->pos - obj->pos;
+
+                    Rs = obj->radius + obj2->radius;
+
+                    if(Rs - dis.mod() > 0){
                         
-//                         for(auto index_changing : grid->cells[l][m]){
-//                             if(index_changing == -1 || index_changing == index_fixed 
-//                                                     || !grid->objects[index_changing].obj) continue;
-                            
-//                             Vector dis_centers = grid->objects[index_changing].obj->pos - grid->objects[index_fixed].obj->pos;
+                        // SDL_Log("Collided");
+                        collide(obj,obj2);
 
-//                             const float rSum = grid->objects[index_fixed].obj->radius 
-//                                              + grid->objects[index_changing].obj->radius;
-                            
-//                             float dp = rSum - dis_centers.mod();
+                    }
 
-//                             if( dp > 0 ){
-                                
-//                                 collide(grid->objects[index_changing].obj,grid->objects[index_fixed].obj);
-
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
+                }
+            }
+    }
+}
 
 float Physics::Energy(){
 
@@ -219,22 +217,22 @@ float Physics::Energy(){
     return energy;
 }
 
-void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
-    for(auto obj : grid->objects){ if(obj){
+// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+//     for(auto obj : grid->objects){ if(obj){
 
-            for(auto obj2 : grid->objects){ if(obj2){ if(obj == obj2) continue;
+//             for(auto obj2 : grid->objects){ if(obj2){ if(obj == obj2) continue;
 
-                    Vector dis = obj2->pos - obj->pos;
+//                     Vector dis = obj2->pos - obj->pos;
 
-                    float Rs = obj->radius + obj2->radius;
+//                     float Rs = obj->radius + obj2->radius;
 
-                    if(Rs - dis.mod() > 0){
+//                     if(Rs - dis.mod() > 0){
  
-                        collide(obj,obj2);
+//                         collide(obj,obj2);
 
-                    }
-                }
-            }
-        }
-    }
-}
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

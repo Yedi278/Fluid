@@ -1,6 +1,11 @@
 #include <vector>
 #include "Draw.hpp"
 #include "GameObject.hpp"
+#include <iostream>
+
+#define WIDTH_DENSITY 10
+#define HEIGHT_DENSITY 10
+#define CELL_DENSITY 100
 
 struct Node
 {
@@ -27,13 +32,12 @@ public:
     bool view_pos = false;
     bool view_other = true;
 
-
     Uint16 density_per_cell = 100;
     
     //Objects Array
     std::vector <GameObject*> objects;
     //Grid of ojects indices
-    int** cells = nullptr;
+    GameObject* cells[WIDTH_DENSITY][HEIGHT_DENSITY][CELL_DENSITY];
 
     Grid(SDL_Renderer* rnd, SDL_Window* wnd);
     
@@ -43,4 +47,8 @@ public:
     void render();
     void clean();
     void update();
+    void display();
+    int cellx(int xpos);
+    int celly(int ypos);
+
 };
