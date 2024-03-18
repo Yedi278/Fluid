@@ -164,6 +164,7 @@ void Engine::render() {
 
 	grid->render();
 	renderBorders();
+	SDL_RenderDrawGrid(renderer, window, grid->w_dens, grid->h_dens);
 
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 

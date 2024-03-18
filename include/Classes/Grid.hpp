@@ -32,6 +32,9 @@ public:
     bool view_pos = false;
     bool view_other = true;
 
+    int w_dens = WIDTH_DENSITY;
+    int h_dens = HEIGHT_DENSITY;
+
     Uint16 density_per_cell = 100;
     
     //Objects Array

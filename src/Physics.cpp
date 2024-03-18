@@ -171,36 +171,37 @@ void collide(GameObject* m1, GameObject* m2){
     m2->vel = reflect(dis,m2->vel);
 }
 
-void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
     
-    int x,y;
-    float Rs;
+//     int x,y;
+//     float Rs;
 
-    for(auto obj : grid->objects) if(obj){
+//     for(auto obj : grid->objects) if(obj){
 
-            x = grid->cellx(obj->pos.x);
-            y = grid->celly(obj->pos.y);
+//             x = grid->cellx(obj->pos.x);
+//             y = grid->celly(obj->pos.y);
 
-            for(int i=x-1; i<=x+1; i++) for(int j=y-1; j<=y+1; j++){
-                if()
-                // printf("%d %d - %d  %d\n",x,y, i,j);
-                for(auto obj2 : grid->cells[i][j]) if(obj2){
+//             for(int i=x-1; i<=x+1; i++) for(int j=y-1; j<=y+1; j++){
+                
+//                 for(auto obj2 : grid->cells[i][j]) if(obj2){
 
-                    Vector dis = obj2->pos - obj->pos;
 
-                    Rs = obj->radius + obj2->radius;
+//                     Vector dis = obj2->pos - obj->pos;
 
-                    if(Rs - dis.mod() > 0){
+//                     Rs = obj->radius + obj2->radius;
+
+//                     if(Rs - dis.mod() > 0){
                         
-                        // SDL_Log("Collided");
-                        collide(obj,obj2);
+//                         // SDL_Log("Collided");
+//                         collide(obj,obj2);
 
-                    }
+//                     }
 
-                }
-            }
-    }
-}
+
+//                 }
+//             }
+//     }
+// }
 
 float Physics::Energy(){
 
@@ -217,22 +218,22 @@ float Physics::Energy(){
     return energy;
 }
 
-// void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
-//     for(auto obj : grid->objects){ if(obj){
+void Physics::resolveCollisions(double time,SDL_Renderer* rnd){
+    for(auto obj : grid->objects){ if(obj){
 
-//             for(auto obj2 : grid->objects){ if(obj2){ if(obj == obj2) continue;
+            for(auto obj2 : grid->objects){ if(obj2){ if(obj == obj2) continue;
 
-//                     Vector dis = obj2->pos - obj->pos;
+                    Vector dis = obj2->pos - obj->pos;
 
-//                     float Rs = obj->radius + obj2->radius;
+                    float Rs = obj->radius + obj2->radius;
 
-//                     if(Rs - dis.mod() > 0){
+                    if(Rs - dis.mod() > 0){
  
-//                         collide(obj,obj2);
+                        collide(obj,obj2);
 
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
+                    }
+                }
+            }
+        }
+    }
+}

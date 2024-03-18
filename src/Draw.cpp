@@ -102,3 +102,22 @@ int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
 
     return status;
 }
+
+void SDL_RenderDrawGrid(SDL_Renderer* renderer, SDL_Window* window, int w_size, int h_size){
+
+    //get window size
+    int width, height;
+    SDL_GetWindowSize(window, &width, &height);
+
+    int w = width/w_size;
+    int h = height/h_size;
+
+
+    for(int i=0; i<w_size; i++){
+        SDL_RenderDrawLine(renderer, i*w, 0, i*w, height);
+    }
+    for(int i=0; i<h_size; i++){
+        SDL_RenderDrawLine(renderer, 0, i*h, width, i*h);
+    }
+
+}
